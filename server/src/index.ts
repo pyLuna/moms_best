@@ -1,22 +1,21 @@
 import express from "express";
-import initFirebase from "./firebase/init";
 import { config } from "dotenv";
 import { PORT } from "./constants";
+import sampleTest from "./api/test/sample_mflix";
+import initMongoDB from "./mongo_db/init";
 
+config({ path: ".env.development" });
 // Load environment variables
 // Passing a `path` to config() will set the path for that environment file
-const configResult = config({ path: ".env.development" });
+// change this path if you want to use a different file or don't pass anything to use `.env`
 const app = express();
-const firebaseAdminApp = initFirebase();
+initMongoDB();
 
-app.get("/hello-world", (req, res) => {
-    res.send({
-        message: "Hello World"
-    });
-});
+app.use(express.json());
+
+app.use("/api/test", sampleTest);
 
 app.listen(PORT, () => {
     console.log("Server is running on port,", PORT);
-    console.log("Firebase initialized", firebaseAdminApp);
-    console.log("Environment variables", configResult);
-})
+    console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
+});
