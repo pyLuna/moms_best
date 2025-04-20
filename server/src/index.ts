@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { PORT } from "./constants";
 import sampleTest from "./api/test/sample_mflix";
 import initMongoDB from "./mongo_db/init";
+import auth from "./api/auth/email";
 
 config({ path: ".env.development" });
 // Load environment variables
@@ -14,6 +15,8 @@ initMongoDB();
 app.use(express.json());
 
 app.use("/api/test", sampleTest);
+
+app.use("/api/auth", auth);
 
 app.listen(PORT, () => {
     console.log("Server is running on port,", PORT);
