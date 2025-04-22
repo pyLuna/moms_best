@@ -23,7 +23,7 @@ router.post("/email", async (req, res) => {
     const token = generateToken(email);
     res.cookie("token", token, { httpOnly: true });
 
-    res.send({ "success": "true" })
+    res.send({ "success": "true", token })
 });
 
 router.post("/signup", async (req, res) => {
@@ -37,13 +37,13 @@ router.post("/signup", async (req, res) => {
 
     const encryptedPassword = await encrypt(password);
 
-    const user = await addUser(email, encryptedPassword);
+    const userId = await addUser(email, encryptedPassword);
 
-    const token = generateToken(user.toString());
+    const token = generateToken(userId.toString());
 
     res.cookie("token", token, { httpOnly: true });
 
-    res.send({ "success": true });
+    res.send({ "success": true, token });
 })
 
 export default router;

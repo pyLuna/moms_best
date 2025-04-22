@@ -4,6 +4,7 @@ import { PORT } from "./constants";
 import sampleTest from "./api/test/sample_mflix";
 import initMongoDB from "./mongo_db/init";
 import auth from "./api/auth/email";
+import { verifyAuthorization } from "./middleware/global";
 
 config({ path: ".env.development" });
 // Load environment variables
@@ -13,6 +14,8 @@ const app = express();
 initMongoDB();
 
 app.use(express.json());
+
+app.use(verifyAuthorization);
 
 app.use("/api/test", sampleTest);
 
