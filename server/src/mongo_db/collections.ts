@@ -1,6 +1,8 @@
 
 const USERS = "users";
+const USERS_PRIVATE = "users_private";
 
 export {
-    USERS
+    USERS,
+    USERS_PRIVATE
 }

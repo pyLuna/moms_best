@@ -1,25 +1,27 @@
 import { Router } from "express";
-import { addUser, getUserByEmail } from "@/service/user";
+import { addUser, getUserByEmail, getUserPasswordByEmail } from "@/service/user";
 import { compare, encrypt } from "@/utils/hashing";
 import { generateToken } from "@/utils/tokens";
-import { client } from "@/mongo_db/init";
 
 const router = Router();
 
 router.post("/email", async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await getUserByEmail(email);
+    const passwordFromDB = await getUserPasswordByEmail(email);
 
-    if (!user) {
+    if (!passwordFromDB) {
         res.status(400).send({ "message": "User not found." });
     }
 
-    const isPasswordValid = await compare(password, user?.password);
+    const isPasswordValid = await compare(password, passwordFromDB!);
 
     if (!isPasswordValid) {
         res.status(400).send({ "message": "Invalid password." });
     }
+
+    const token = generateToken(email);
+    res.cookie("token", token, { httpOnly: true });
 
     res.send({ "success": "true" })
 });
@@ -41,7 +43,7 @@ router.post("/signup", async (req, res) => {
 
     res.cookie("token", token, { httpOnly: true });
 
-    res.send({ "success": true, });
+    res.send({ "success": true });
 })
 
 export default router;
