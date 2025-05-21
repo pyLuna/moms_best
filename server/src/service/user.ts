@@ -1,8 +1,7 @@
 import { USERS, USERS_PRIVATE } from "@/mongo_db/collections";
-import { client } from "@/mongo_db/init";
 import query from "@/mongo_db/query";
 import { User, UsersPrivate } from "@/types/users";
-import { InsertOneResult, Document } from "mongodb";
+import { Document, InsertOneResult } from "mongodb";
 
 const getUserByEmail = async (email: string) => {
 
@@ -49,11 +48,8 @@ const getUserPasswordByEmail = async (email: string) => {
         },
     });
     return result.password;
-
 }
 
 export {
-    getUserByEmail,
-    addUser,
-    getUserPasswordByEmail
+    addUser, getUserByEmail, getUserPasswordByEmail
 };
