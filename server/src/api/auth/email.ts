@@ -1,11 +1,12 @@
-import { Router } from "express";
 import { addUser, getUserByEmail, getUserPasswordByEmail } from "@/service/user";
 import { compare, encrypt } from "@/utils/hashing";
+import Route from "@/utils/route";
 import { generateToken } from "@/utils/tokens";
+import { Router } from "express";
 
 const router = Router();
 
-router.post("/email", async (req, res) => {
+router.post(Route.auth.login.email, async (req, res) => {
     const { email, password } = req.body;
 
     const passwordFromDB = await getUserPasswordByEmail(email);
@@ -26,7 +27,7 @@ router.post("/email", async (req, res) => {
     res.send({ "success": "true", token })
 });
 
-router.post("/signup", async (req, res) => {
+router.post(Route.auth.signup.email, async (req, res) => {
     const { email, password } = req.body;
 
     const result = await getUserByEmail(email);
