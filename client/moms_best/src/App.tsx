@@ -1,13 +1,18 @@
 import { BrowserRouter } from "react-router"
+import Header from "./components/Header"
 import PageRoutes from "./pages/PageRoutes"
-import "./App.css"
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <PageRoutes />
-    </BrowserRouter>
+    <div className="grid grid-rows-[52px_1fr] mx-auto">
+      <Header />
+      <main>
+        <BrowserRouter>
+          <PageRoutes />
+        </BrowserRouter>
+      </main>
+    </div>
   )
 }
 
