@@ -1,8 +1,9 @@
-import React from "react";
+import { FC, InputHTMLAttributes } from "react";
 
-const Input = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
+type InputProps = InputHTMLAttributes<HTMLInputElement>;
+const Input: FC<InputProps> = ({ children, className = "", ...props }) => {
     return (
-        <input className="input input-bordered w-full " {...props} />
+        <input className={`input input-bordered w-full ${className}`} {...props} />
     )
 }
 
