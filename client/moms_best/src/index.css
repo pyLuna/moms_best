@@ -1,14 +1,14 @@
 @import "tailwindcss";
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
-body{
+body {
   margin: 0;
   padding: 0;
-  @apply bg-background text-foreground;
+  @apply bg-linear-to-b from-primary-900/80 to-background text-foreground;
 }
 
 /* Light theme color variables */
@@ -39,7 +39,7 @@ body{
 
 /* Dark theme color variables */
 /* It is reversed values of the light theme */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --foreground: #ffffff;
   --background: #171717;
   --primary-50: oklch(0.9 0.0497 207.5);
@@ -96,14 +96,14 @@ body{
 }
 
 @layer {
-  .page{
-    @apply mx-4 mb-20 min-h-screen
+  .page {
+    @apply mx-4 mb-20 min-h-screen;
   }
 
   .divider {
-    @apply border-foreground/20
+    @apply border-foreground/20;
   }
-  .hover-content{
-    @apply ease-in-out duration-300 hover:shadow-md hover:shadow-foreground/20 border border-foreground/30 rounded-md p-4
+  .hover-content {
+    @apply ease-in-out duration-300 hover:shadow-md hover:shadow-foreground/20 border border-foreground/30 rounded-md p-4;
   }
 }

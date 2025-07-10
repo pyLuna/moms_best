@@ -1,9 +1,5 @@
 const Login = () => {
-
-    return (
-        <form>
-        </form>
-    );
-}
+  return <></>;
+};
 
 export default Login;

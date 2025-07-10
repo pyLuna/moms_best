@@ -1,20 +1,23 @@
-import { useEffect } from 'react';
-import WebFont from 'webfontloader';
+import { useEffect } from "react";
+import WebFont from "webfontloader";
 
 const IconName = ({ initial = true }: { initial?: boolean }) => {
-    useEffect(() => {
-        WebFont.load({
-            google: {
-                families: ["Tangerine"]
-            }
-        });
-    }, []);
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ["Tangerine"],
+      },
+    });
+  }, []);
 
-    return (
-        <h1 className="text-3xl font-semibold" style={{ fontFamily: 'Tangerine' }}>
-            {initial ? "MB" : "Mom's Best"}
-        </h1>
-    )
-}
+  return (
+    <h1
+      className="text-5xl font-semibold mt-2"
+      style={{ fontFamily: "Tangerine" }}
+    >
+      {initial ? "MB" : "Mom's Best"}
+    </h1>
+  );
+};
 
-export default IconName
+export default IconName;
