@@ -4,7 +4,10 @@ import Button from "./ui/button";
 const Header = () => {
   return (
     <div className="flex items-center justify-between px-2">
-      <IconName initial={false} />
+      <IconName
+        initial={false}
+        className="text-primary-200"
+      />
       <nav className="flex gap-4 items-center">
         <a href="">Home</a>
         <a href="">Test</a>

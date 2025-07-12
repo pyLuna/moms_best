@@ -8,7 +8,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  @apply bg-linear-to-b from-primary-900/80 to-background text-foreground;
+  /* @apply bg-linear-to-b from-primary-900/80 to-background text-foreground; */
 }
 
 /* Light theme color variables */
