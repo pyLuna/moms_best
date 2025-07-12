@@ -1,5 +1,7 @@
+import { Link } from "react-router";
+import { Url } from "../url/Url";
 import IconName from "./icon/IconName";
-import Button from "./ui/button";
+import ButtonLink from "./ui/button.link";
 
 const Header = () => {
   return (
@@ -9,11 +11,16 @@ const Header = () => {
         className="text-primary-200"
       />
       <nav className="flex gap-4 items-center">
-        <a href="">Home</a>
-        <a href="">Test</a>
-        <a href="">Test</a>
-        <Button variant="text">Sign In</Button>
-        <Button>Create Account</Button>
+        <Link to={Url.home}>Home</Link>
+        <Link to="">Test</Link>
+        <Link to="">Test</Link>
+        <ButtonLink
+          variant="text"
+          href={Url.login}
+        >
+          Sign In
+        </ButtonLink>
+        <ButtonLink href={Url.signUp}>Create Account</ButtonLink>
       </nav>
     </div>
   );

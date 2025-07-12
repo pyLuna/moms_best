@@ -1,16 +1,9 @@
 import { ButtonHTMLAttributes, FC } from "react";
+import { getVariantClass, VariantType } from "../../types/button";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "text";
+  variant?: VariantType;
 };
-
-const differentVariants = new Map<string, string>([
-  ["primary", "font-medium bg-primary-300 text-white hover:bg-primary-200"],
-  [
-    "text",
-    "bg-transparent font-medium text-primary-300 hover:bg-primary-800/70",
-  ],
-]);
 
 const Button: FC<ButtonProps> = ({
   children,
@@ -18,13 +11,7 @@ const Button: FC<ButtonProps> = ({
   variant,
   ...props
 }) => {
-  const variantValue =
-    differentVariants.get(variant || "primary") ||
-    differentVariants.get("primary");
-
-  if (variantValue) {
-    className += ` ${variantValue}`;
-  }
+  className += getVariantClass(variant || "primary");
 
   return (
     <button

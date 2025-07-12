@@ -4,14 +4,14 @@ import PageRoutes from "./pages/PageRoutes";
 
 function App() {
   return (
-    <div className="grid grid-rows-[52px_1fr] mx-auto">
-      <Header />
-      <main>
-        <BrowserRouter>
+    <BrowserRouter>
+      <div className="grid grid-rows-[52px_1fr] mx-auto">
+        <Header />
+        <main>
           <PageRoutes />
-        </BrowserRouter>
-      </main>
-    </div>
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
 

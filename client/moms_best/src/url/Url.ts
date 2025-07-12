@@ -1,5 +1,5 @@
-class URL {
-    static login = "/login";
-}
-
-export default URL;
+export const Url = {
+  login: "/login",
+  signUp: "/sign-up",
+  home: "/",
+};
