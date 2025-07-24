@@ -8,18 +8,18 @@ html {
 body {
   margin: 0;
   padding: 0;
-  /* @apply bg-linear-to-b from-primary-900/80 to-background text-foreground; */
+  @apply bg-linear-to-b from-primary-900/80 to-background text-foreground;
 }
 
 /* Light theme color variables */
 :root {
   --foreground: #171717;
-  --background: #ffffff;
+  --background: #faf5ef;
   --primary-50: oklch(0.05 0.0497 207.5);
   --primary-100: oklch(0.1 0.0497 207.5);
   --primary-200: oklch(0.2 0.0497 207.5);
   --primary-300: oklch(0.3 0.0497 207.5);
-  --primary-400: oklch(0.4 0.0497 207.5);
+  --primary-400: oklch(71.398% 0.01722 206.652);
   --primary-500: oklch(0.5 0.0497 207.5);
   --primary-600: oklch(0.6 0.0497 207.5);
   --primary-700: oklch(0.7 0.0497 207.5);
@@ -97,7 +97,7 @@ body {
 
 @layer {
   .page {
-    @apply mx-4 mb-20 min-h-screen;
+    @apply mx-4 mb-20 h-[79vh] min-h-screen;
   }
 
   .divider {
@@ -105,5 +105,8 @@ body {
   }
   .hover-content {
     @apply ease-in-out duration-300 hover:shadow-md hover:shadow-foreground/20 border border-foreground/30 rounded-md p-4;
+  }
+  .two-column {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
   }
 }

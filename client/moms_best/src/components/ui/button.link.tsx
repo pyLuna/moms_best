@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { getVariantClass, VariantType } from "../../types/button";
-export default function ButtonLink({
+export default function AppLink({
   children,
   href,
   variant = "primary",

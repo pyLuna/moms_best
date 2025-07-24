@@ -5,12 +5,10 @@ import PageRoutes from "./pages/PageRoutes";
 function App() {
   return (
     <BrowserRouter>
-      <div className="grid grid-rows-[52px_1fr] mx-auto">
+      <main className="bg-background grid grid-rows-[52px_1fr] mx-auto overflow-hidden">
         <Header />
-        <main>
-          <PageRoutes />
-        </main>
-      </div>
+        <PageRoutes />
+      </main>
     </BrowserRouter>
   );
 }
