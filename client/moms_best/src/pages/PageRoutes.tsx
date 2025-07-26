@@ -8,6 +8,10 @@ const PageRoutes = () => {
         path="/"
         element={<Home />}
       />
+      <Route
+        path="/test"
+        element={<div>Test Page</div>}
+      />
     </Routes>
   );
 };

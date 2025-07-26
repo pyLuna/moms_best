@@ -1,15 +1,32 @@
 import { useMobileNav } from "@/contexts/MobileNavProvider";
 import { Url } from "@/url/Url";
-import AppLink from "../ui/button.link";
+import { useNavigate } from "react-router";
+import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
-const MobileSideNav = () => {
-  const { isOpen, toggle } = useMobileNav();
+type MobileSideNavProps = {
+  onSignIn?: () => void;
+};
 
-  const onNavigate = () => {
-    // Handle navigation logic here
-    console.log("Navigation clicked");
-    toggle(); // Close the menu after clicking
+const MobileSideNav = ({ onSignIn }: MobileSideNavProps) => {
+  const { isOpen, toggle, navigateRef } = useMobileNav();
+
+  const navigate = useNavigate();
+
+  const handleNavigate = (url?: string) => {
+    const shouldNavigate = navigateRef?.current?.();
+    console.log("MobileSideNav: handleNavigate", url, shouldNavigate);
+    toggle(false); // Close the side nav after navigation
+    if (!shouldNavigate) return;
+    // Perform navigation
+    if (url) {
+      navigate(url);
+    }
+  };
+
+  const handleSignIn = () => {
+    toggle(false); // Close the side nav
+    onSignIn?.();
   };
 
   return (
@@ -20,24 +37,20 @@ const MobileSideNav = () => {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Menu</SheetTitle>
-          {/* <SheetDescription>Navigate through the app</SheetDescription> */}
         </SheetHeader>
-        <nav className="flex flex-col gap-2 text-center">
-          <AppLink
-            onClick={onNavigate}
-            href={Url.home}
+        <nav className="flex flex-col gap-2 text-center mx-6">
+          <Button
+            onClick={() => handleNavigate(Url.home)}
             variant="ghost"
           >
             Home
-          </AppLink>
-          <AppLink
-            onClick={onNavigate}
-            href={Url.login}
-            // onClick={handleLogin}
-            variant="ghost"
+          </Button>
+          <Button
+            onClick={handleSignIn}
+            variant="default"
           >
-            Login
-          </AppLink>
+            Sign In
+          </Button>
         </nav>
       </SheetContent>
     </Sheet>
