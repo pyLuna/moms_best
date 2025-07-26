@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import { Url } from "../url/Url";
 import IconName from "./icon/IconName";
 import MobileMenu from "./nav/MobileMenu";
-import MobileSideNav from "./nav/MobileSideNav";
 import { ModeToggle } from "./ThemeToggle";
 import AppLink from "./ui/button.link";
 
@@ -13,8 +12,9 @@ const Header = () => {
         initial={false}
         className="text-primary-200 grow"
       />
-      <nav className="flex items-center justify-between gap-0 md:gap-4">
+      <nav className="flex items-center justify-between gap-2 md:gap-4">
         {/* Hide nav on mobile */}
+        <ModeToggle />
         <nav className="gap-4 hidden md:block items-center justify-end">
           <Link to={Url.home}>Home</Link>
           <Link to="">Test</Link>
@@ -27,8 +27,7 @@ const Header = () => {
           </AppLink>
           <AppLink href={Url.signUp}>Create Account</AppLink>
         </nav>
-        <ModeToggle />
-        <MobileSideNav trigger={<MobileMenu />} />
+        <MobileMenu />
       </nav>
     </div>
   );

@@ -1,15 +1,19 @@
-import { cn } from "@/lib/utils";
+import { useMobileNav } from "@/contexts/MobileNavProvider";
 import { MenuIcon } from "lucide-react";
-import { buttonVariants } from "../ui/button";
+import { Button } from "../ui/button";
+import MobileSideNav from "./MobileSideNav";
 
 const MobileMenu = () => {
-  const className = cn(buttonVariants({ variant: "ghost" }), "md:hidden");
-
+  const { toggle } = useMobileNav();
   return (
     <>
-      <span className={className}>
+      <Button
+        variant="ghost"
+        onClick={() => toggle()}
+      >
         <MenuIcon />
-      </span>
+      </Button>
+      <MobileSideNav />
     </>
   );
 };

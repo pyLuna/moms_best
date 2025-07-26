@@ -1,17 +1,19 @@
-import { ReactNode } from "react";
+import { useMobileNav } from "@/contexts/MobileNavProvider";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "../ui/sheet";
 
-const MobileSideNav = ({ trigger }: { trigger: ReactNode }) => {
+const MobileSideNav = () => {
+  const { isOpen, toggle } = useMobileNav();
   return (
-    <Sheet>
-      <SheetTrigger>{trigger}</SheetTrigger>
+    <Sheet
+      open={isOpen}
+      onOpenChange={toggle}
+    >
       <SheetContent>
         <SheetHeader>
           <SheetTitle>Navigation</SheetTitle>

@@ -1,10 +1,12 @@
 {
-    "name": "moms_best",
-    "private": true,
-    "scripts": {
+  "name": "moms_best",
+  "private": true,
+  "scripts": {
     "dev:server": "npm run dev --prefix server/",
     "dev:client": "npm run dev --prefix client/moms_best/",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
-    }
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
-  
+}
