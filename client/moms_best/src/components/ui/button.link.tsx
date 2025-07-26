@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import { getVariantClass, VariantType } from "../../types/button";
+import { twMerge } from "tailwind-merge";
+import { getVariantClass, VariantType } from "../../types/variants";
 export default function AppLink({
   children,
   href,
@@ -11,12 +12,16 @@ export default function AppLink({
   variant?: VariantType;
   className?: string;
 }) {
-  className += getVariantClass(variant);
+  className = twMerge(
+    className,
+    getVariantClass(variant || "primary"),
+    "px-4 py-2"
+  );
 
   return (
     <Link
       to={href}
-      className={`${className} px-4 py-2 rounded-full cursor-pointer`}
+      className={className}
     >
       {children}
     </Link>
