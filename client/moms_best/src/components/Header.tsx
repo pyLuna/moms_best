@@ -20,7 +20,7 @@ const Header = () => {
           <Link to="">Test</Link>
           <Link to="">Test</Link>
           <AppLink
-            variant="text"
+            variant="link"
             href={Url.login}
           >
             Sign In
