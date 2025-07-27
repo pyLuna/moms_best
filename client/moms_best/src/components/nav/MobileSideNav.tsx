@@ -6,9 +6,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 
 type MobileSideNavProps = {
   onSignIn?: () => void;
+  onSignUp?: () => void;
 };
 
-const MobileSideNav = ({ onSignIn }: MobileSideNavProps) => {
+const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
   const { isOpen, toggle, navigateRef } = useMobileNav();
 
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ const MobileSideNav = ({ onSignIn }: MobileSideNavProps) => {
     onSignIn?.();
   };
 
+  const handleSignUp = () => {
+    toggle(false); // Close the side nav
+    onSignUp?.();
+  };
+
   return (
     <Sheet
       open={isOpen}
@@ -47,9 +53,15 @@ const MobileSideNav = ({ onSignIn }: MobileSideNavProps) => {
           </Button>
           <Button
             onClick={handleSignIn}
-            variant="default"
+            variant="secondary"
           >
             Sign In
+          </Button>
+          <Button
+            onClick={handleSignUp}
+            variant="default"
+          >
+            Create Account
           </Button>
         </nav>
       </SheetContent>

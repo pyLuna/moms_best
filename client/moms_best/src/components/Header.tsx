@@ -4,15 +4,16 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Url } from "../url/Url";
 import Login from "./auth/Login";
+import SignUp from "./auth/SignUp";
 import IconName from "./icon/IconName";
 import MobileSideNav from "./nav/MobileSideNav";
 import { ModeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
-import AppLink from "./ui/button.link";
 
 const Header = () => {
   const { toggle } = useMobileNav();
   const [loginOpen, setLoginOpen] = useState(false);
+  const [signUpOpen, setSignUpOpen] = useState(false);
 
   return (
     <>
@@ -34,7 +35,7 @@ const Header = () => {
             >
               Sign In
             </Button>
-            <AppLink href={Url.test}>Create Account</AppLink>
+            <Button onClick={() => setSignUpOpen(true)}>Create Account</Button>
           </nav>
           <Button
             className="md:hidden"
@@ -43,12 +44,19 @@ const Header = () => {
           >
             <MenuIcon />
           </Button>
-          <MobileSideNav onSignIn={() => setLoginOpen(true)} />
+          <MobileSideNav
+            onSignIn={() => setLoginOpen(true)}
+            onSignUp={() => setSignUpOpen(true)}
+          />
         </nav>
       </div>
       <Login
         open={loginOpen}
         setOpen={setLoginOpen}
+      />
+      <SignUp
+        open={signUpOpen}
+        setOpen={setSignUpOpen}
       />
     </>
   );

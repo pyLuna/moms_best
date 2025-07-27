@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
@@ -7,7 +8,6 @@ import user from "./api/user/user";
 import { PORT } from "./constants";
 import { verifyAuthorization } from "./middleware/global";
 import initMongoDB from "./mongo_db/init";
-
 config({ path: ".env.development" });
 // Load environment variables
 // Passing a `path` to config() will set the path for that environment file
@@ -23,6 +23,8 @@ const corsOptions = {
 };
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(cors(corsOptions));
 

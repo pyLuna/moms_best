@@ -22,14 +22,19 @@ router.post(Route.auth.login.email, async (req, res) => {
   }
 
   const token = generateToken({ email, user_id: user?.user_id });
-  res.cookie("token", token, { httpOnly: true });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  });
 
   res.send({ success: "true", token });
 });
 
 router.post(Route.auth.signup.email, async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password, ...others } = req.body;
+  console.log("SignUp request data:", req.body);
   const result = await getUserByEmail(email);
 
   if (result) {
@@ -38,11 +43,16 @@ router.post(Route.auth.signup.email, async (req, res) => {
 
   const encryptedPassword = await encrypt(password);
 
-  const userId = await addUser(email, encryptedPassword);
+  const userId = await addUser(email, encryptedPassword, others);
 
   const token = generateToken({ email, user_id: userId.toString() });
 
-  res.cookie("token", token, { httpOnly: true });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  });
 
   res.send({ success: true, token });
 });

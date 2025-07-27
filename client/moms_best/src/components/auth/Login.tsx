@@ -1,8 +1,5 @@
 import { useUser } from "@/contexts/UserContext";
-import { ApiUrl } from "@/url/ApiUrl";
-import { Fetcher } from "@/url/Fetcher";
 import { Dispatch, SetStateAction } from "react";
-import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
 import { Button } from "../ui/button";
 import { LabelCheckbox } from "../ui/checkbox";
@@ -26,27 +23,11 @@ const Login = ({ open, setOpen }: LoginProps) => {
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const api = new Fetcher(ApiUrl.email);
-
-    const formData = new FormData(event.target as HTMLFormElement);
-
-    const result = await api.post({
-      email: formData.get("email"),
-      password: formData.get("password"),
+    await user.login(event, {
+      onSuccess: () => {
+        setOpen(false);
+      },
     });
-
-    if (!result.ok) {
-      console.error("Login failed", await result.json());
-      toast.error("Login failed. Please check your credentials.");
-      throw new Error("Failed to login");
-    } else {
-      user.refetch();
-      toast.success("Login successful!", {
-        description: "Welcome back!",
-      });
-    }
-
-    setOpen(false);
   };
 
   return (
@@ -68,10 +49,12 @@ const Login = ({ open, setOpen }: LoginProps) => {
         >
           <LabeledInput
             label="Email"
+            name="email"
             type="email"
             placeholder="john.doe@email.com"
           />
           <LabeledInput
+            name="password"
             label="Password"
             type="password"
             placeholder="••••••••"

@@ -7,6 +7,7 @@ const router = Router();
 
 router.get(Route.user.get, async (req, res) => {
   const token = req.cookies.token;
+  console.log("Token from request:", token);
   const userData = decodeToken(token)!;
 
   try {
