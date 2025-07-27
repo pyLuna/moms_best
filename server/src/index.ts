@@ -34,7 +34,13 @@ app.use("/user", user);
 
 app.use("/auth", auth);
 
-app.listen(PORT, () => {
-  console.log("Server is running on port,", PORT);
-  console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
-});
+// Export the app for serverless deployment
+export default app;
+
+// Only start the server if not in serverless environment
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log("Server is running on port,", PORT);
+    console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
+  });
+}
