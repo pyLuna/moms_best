@@ -7,9 +7,9 @@
     "strict": true,
     "skipLibCheck": true,
     "baseUrl": ".",
-    // "paths": {
-    //   "src/*": ["src/*"]
-    // },
+    "paths": {
+      "src/*": ["src/*"]
+    },
     "outDir": "./dist",
     "rootDir": "./src",
     "moduleResolution": "node"
