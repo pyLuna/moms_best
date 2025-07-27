@@ -13,11 +13,15 @@ const getUserByEmail = async (email: string) => {
   return result;
 };
 
-const addUser = async (email: string, password: string) => {
+const addUser = async (
+  email: string,
+  password: string,
+  data: Record<string, any>
+) => {
   const useResult = await query<InsertOneResult<Document>>({
     collection_name: USERS,
     queryFn: async (client) => {
-      return await client.insertOne({ email });
+      return await client.insertOne({ email, ...data });
     },
   });
   await addUserPrivate({ user_id: useResult.insertedId.toString(), password });

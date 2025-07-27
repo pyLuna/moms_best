@@ -14,6 +14,19 @@ export class Fetcher {
     };
   }
 
+  private _getRequestInit(method: string, body?: any) {
+    let requestInit: RequestInit = {
+      method: method,
+      headers: this._options.headers,
+      credentials: "include",
+    };
+
+    if (body) {
+      requestInit.body = JSON.stringify(body);
+    }
+    return requestInit;
+  }
+
   public getUrl(): URL {
     return new URL(this._path, Fetcher.BASE_URL);
   }
@@ -24,33 +37,18 @@ export class Fetcher {
 
   // Add instance methods to access _path and _options
   public get(): Promise<Response> {
-    return fetch(this.getFullUrl(), {
-      method: "GET",
-      headers: this._options.headers,
-    });
+    return fetch(this.getFullUrl(), this._getRequestInit("GET"));
   }
 
   public post(body: any): Promise<Response> {
-    return fetch(this.getFullUrl(), {
-      method: "POST",
-      headers: this._options.headers,
-      body: JSON.stringify(body),
-    });
+    return fetch(this.getFullUrl(), this._getRequestInit("POST", body));
   }
 
   public put(body: any): Promise<Response> {
-    return fetch(this.getFullUrl(), {
-      method: "PUT",
-      headers: this._options.headers,
-      body: JSON.stringify(body),
-    });
+    return fetch(this.getFullUrl(), this._getRequestInit("PUT", body));
   }
 
   public patch(body: any): Promise<Response> {
-    return fetch(this.getFullUrl(), {
-      method: "PATCH",
-      headers: this._options.headers,
-      body: JSON.stringify(body),
-    });
+    return fetch(this.getFullUrl(), this._getRequestInit("PATCH", body));
   }
 }
