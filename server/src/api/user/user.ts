@@ -1,7 +1,7 @@
-import { getUserByEmail } from "@/service/user";
-import Route from "@/utils/route";
-import { decodeToken } from "@/utils/tokens";
 import { Router } from "express";
+import { getUserByEmail } from "src/service/user";
+import Route from "src/utils/route";
+import { decodeToken } from "src/utils/tokens";
 
 const router = Router();
 

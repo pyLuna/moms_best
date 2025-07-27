@@ -4,7 +4,6 @@ import { config } from "dotenv";
 import express from "express";
 import serverless from "serverless-http";
 import auth from "./api/auth/email";
-import sampleTest from "./api/test/sample_mflix";
 import user from "./api/user/user";
 import { PORT } from "./constants";
 import { verifyAuthorization } from "./middleware/global";
@@ -31,8 +30,6 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 
 app.use(verifyAuthorization);
-
-app.use("/test", sampleTest);
 
 app.use("/user", user);
 

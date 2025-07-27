@@ -1,4 +1,4 @@
-import { isTokenExpired } from "@/utils/tokens";
+import { isTokenExpired } from "src/utils/tokens";
 
 const verifyAuthorization = (req: any, res: any, next: any) => {
   const sendUnauthorized = () =>

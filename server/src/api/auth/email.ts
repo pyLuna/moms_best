@@ -1,8 +1,8 @@
-import { addUser, getUserByEmail, getUserPrivateData } from "@/service/user";
-import { compare, encrypt } from "@/utils/hashing";
-import Route from "@/utils/route";
-import { generateToken } from "@/utils/tokens";
 import { Router } from "express";
+import { addUser, getUserByEmail, getUserPrivateData } from "src/service/user";
+import { compare, encrypt } from "src/utils/hashing";
+import Route from "src/utils/route";
+import { generateToken } from "src/utils/tokens";
 
 const router = Router();
 
