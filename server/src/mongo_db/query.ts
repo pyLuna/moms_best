@@ -11,15 +11,20 @@ const query = async <T>({
     collection_name,
     queryFn
 }: QueryParams): Promise<T> => {
-    await client.connect();
+    try {
+        // Only connect if not already connected
+        if (!client.topology || !client.topology.isConnected()) {
+            await client.connect();
+        }
 
-    const col = client.db(database_name || "moms_db").collection(collection_name);
-
-    const result = await queryFn(col);
-
-    await client.close();
-
-    return result as T;
+        const col = client.db(database_name || "moms_db").collection(collection_name);
+        const result = await queryFn(col);
+        
+        return result as T;
+    } catch (error) {
+        console.error("Database query error:", error);
+        throw error;
+    }
 }
 
 export default query;
