@@ -1,4 +1,8 @@
+import { useUser } from "@/contexts/UserContext";
+import { ApiUrl } from "@/url/ApiUrl";
+import { Fetcher } from "@/url/Fetcher";
 import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
 import { Button } from "../ui/button";
 import { LabelCheckbox } from "../ui/checkbox";
@@ -17,6 +21,34 @@ type LoginProps = {
 };
 
 const Login = ({ open, setOpen }: LoginProps) => {
+  const user = useUser();
+
+  const submitHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const api = new Fetcher(ApiUrl.email);
+
+    const formData = new FormData(event.target as HTMLFormElement);
+
+    const result = await api.post({
+      email: formData.get("email"),
+      password: formData.get("password"),
+    });
+
+    if (!result.ok) {
+      console.error("Login failed", await result.json());
+      toast.error("Login failed. Please check your credentials.");
+      throw new Error("Failed to login");
+    } else {
+      user.refetch();
+      toast.success("Login successful!", {
+        description: "Welcome back!",
+      });
+    }
+
+    setOpen(false);
+  };
+
   return (
     <Dialog
       open={open}
@@ -30,7 +62,10 @@ const Login = ({ open, setOpen }: LoginProps) => {
           </DialogDescription>
         </DialogHeader>
 
-        <form className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={submitHandler}
+        >
           <LabeledInput
             label="Email"
             type="email"
