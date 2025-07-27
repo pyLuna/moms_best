@@ -1,0 +1,20 @@
+import { getUserByEmail } from "@/service/user";
+import Route from "@/utils/route";
+import { decodeToken } from "@/utils/tokens";
+import { Router } from "express";
+
+const router = Router();
+
+router.get(Route.user.get, async (req, res) => {
+  const token = req.cookies.token;
+  const userData = decodeToken(token)!;
+
+  try {
+    const user = await getUserByEmail(userData.email);
+    res.send({ user });
+  } catch (error) {
+    res.status(500).send({ message: "Error fetching user data" });
+  }
+});
+
+export default router;
