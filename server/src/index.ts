@@ -2,12 +2,14 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
+import serverless from "serverless-http";
 import auth from "./api/auth/email";
 import sampleTest from "./api/test/sample_mflix";
 import user from "./api/user/user";
 import { PORT } from "./constants";
 import { verifyAuthorization } from "./middleware/global";
 import initMongoDB from "./mongo_db/init";
+
 config({ path: ".env.development" });
 // Load environment variables
 // Passing a `path` to config() will set the path for that environment file
@@ -37,7 +39,6 @@ app.use("/user", user);
 app.use("/auth", auth);
 
 // Export the app for serverless deployment
-export default app;
 
 // Only start the server if not in serverless environment
 if (require.main === module) {
@@ -46,3 +47,6 @@ if (require.main === module) {
     console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
   });
 }
+
+module.exports = app;
+module.exports.handler = serverless(app);
