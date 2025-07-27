@@ -37,9 +37,10 @@ app.use("/auth", auth);
 
 // Export the app for serverless deployment
 
-// Only start the server if not in serverless environment
+// Only start the server if not in serverless environment bump
 if (require.main === module) {
   app.listen(PORT, () => {
+    console.log("Allowed Origins:", process.env.ALLOWED_ORIGINS);
     console.log("Server is running on port,", PORT);
     console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
   });
