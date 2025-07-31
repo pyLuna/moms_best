@@ -2,13 +2,7 @@ import { User } from "@/types/user";
 import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-
-interface LoginOptions {
-  onSuccess?: () => void;
-  onError?: () => void;
-  displayToast?: boolean;
-}
+import { useState } from "react";
 
 export type UserHookType = {
   user: User | undefined;
@@ -19,13 +13,15 @@ export type UserHookType = {
   isFetched: boolean;
   isSuccess: boolean;
   isLoggedIn: boolean;
-  login: (event: React.FormEvent, options?: LoginOptions) => Promise<void>;
+  metadata?: Record<string, any> | null;
+  setMetadata?: React.Dispatch<
+    React.SetStateAction<Record<string, any> | null>
+  >;
 };
 
 const useAuth = (): UserHookType => {
-  const myFetcher = useFetcher(ApiUrl.user.my, { useKey: true });
-  const loginFetcher = useFetcher(ApiUrl.email, { useKey: false });
-  const key = sessionStorage.getItem("key");
+  const myFetcher = useFetcher(ApiUrl.user.my);
+  const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
 
   const fetchStatus = useQuery({
     queryKey: ["user"],
@@ -42,41 +38,8 @@ const useAuth = (): UserHookType => {
     gcTime: 1000 * 60 * 2, // 2 minutes
     refetchOnWindowFocus: false,
     refetchOnReconnect: true,
-    enabled: !!key, // Only fetch if key is available
+    enabled: !!metadata?.key,
   });
-
-  const login = async (
-    event: React.FormEvent,
-    options?: {
-      onSuccess?: () => void;
-      onError?: () => void;
-      displayToast?: boolean;
-    }
-  ) => {
-    const viewToast = options?.displayToast ?? true;
-
-    const formData = new FormData(event.target as HTMLFormElement);
-    const data = Object.fromEntries(formData.entries());
-    console.log("Login data:", data);
-    const result = await loginFetcher.post(data);
-
-    if (!result.ok) {
-      console.error("Login failed", await result.json());
-      if (viewToast) {
-        toast.error("Login failed. Please check your credentials.");
-      }
-      options?.onError?.();
-      throw new Error("Failed to login");
-    } else {
-      fetchStatus?.refetch();
-      options?.onSuccess?.();
-      if (viewToast) {
-        toast.success("Login successful!", {
-          description: "Welcome back!",
-        });
-      }
-    }
-  };
 
   return {
     user: { ...fetchStatus.data } as User,
@@ -87,7 +50,8 @@ const useAuth = (): UserHookType => {
     refetch: fetchStatus.refetch,
     isFetched: fetchStatus.isFetched,
     isSuccess: fetchStatus.isSuccess,
-    login: login,
+    metadata: metadata,
+    setMetadata,
   };
 };
 

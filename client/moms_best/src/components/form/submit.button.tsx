@@ -1,3 +1,5 @@
+import { Loader2Icon } from "lucide-react";
+import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 
 const SubmitButton = ({
@@ -7,13 +9,22 @@ const SubmitButton = ({
   text: string;
   [key: string]: any;
 }) => {
+  const form = useFormStatus();
+
   return (
     <Button
+      disabled={form.pending}
       type="submit"
       className="s"
       {...props}
     >
-      {text}
+      {form.pending ? (
+        <span className="animate-spin">
+          <Loader2Icon />
+        </span>
+      ) : (
+        text
+      )}
     </Button>
   );
 };

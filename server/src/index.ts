@@ -9,7 +9,6 @@ import { PORT } from "./constants";
 import { verifyApiKey } from "./middleware/verify/api.key";
 import { verifyAuthorization } from "./middleware/verify/auth";
 import initMongoDB from "./mongo_db/init";
-import { wrapAsync } from "./utils/misc";
 
 config({ path: ".env.development" });
 // Load environment variables
@@ -31,7 +30,7 @@ app.use(cookieParser());
 
 app.use(cors(corsOptions));
 
-app.use(verifyAuthorization, wrapAsync(verifyApiKey));
+app.use(verifyAuthorization, verifyApiKey);
 
 app.use("/user", user);
 

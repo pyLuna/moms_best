@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { findKey } from "../../service/metadata";
 import { roles } from "../../service/rbac";
 import { ServerPermissions } from "../../types/permissions";
-import { compare } from "../../utils/hashing";
 import { isSkip } from "../../utils/misc";
 
 export const verifyApiKey = async (
@@ -16,22 +15,23 @@ export const verifyApiKey = async (
 
   console.log("API Key Header:", apiKeyHeader, apiKey);
   if (!apiKey) {
-    return res.status(401).send({ error: "API key is missing" });
+    res.status(401).send({ error: "API key is missing" });
+    return;
   }
 
   const record = await findKey(apiKey);
 
   if (!record) {
-    return res.status(403).send({ error: "Invalid API key" });
+    res.status(403).send({ error: "Invalid API key" });
+    return;
   }
 
-  const isValid = await compare(apiKey, record.key);
+  const isValid = apiKey === record!.key;
 
   if (!isValid) {
-    return res.status(403).send({ error: "Invalid API key" });
+    res.status(403).send({ error: "Invalid API key" });
+    return;
   }
-
-  (req as any).role = record.role;
 
   next();
 };
@@ -41,7 +41,7 @@ export const authorize = (permission: ServerPermissions) => {
     const roleName = (req as any).role;
     const role = roles[roleName];
     if (!role || !role.permissions.includes(permission)) {
-      return res.status(403).json({ error: "Forbidden" });
+      res.status(403).json({ error: "Forbidden" });
     }
     next();
   };

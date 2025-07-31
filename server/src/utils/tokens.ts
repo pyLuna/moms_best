@@ -13,8 +13,7 @@ const decodeToken = (token: string) =>
 const isTokenExpired = (token: string) => {
   try {
     const decoded = decodeToken(token)!;
-    console.log("decoded", decoded);
-    return decoded.exp ? decoded.exp < Date.now() / 1000 : false;
+    return decoded.exp ? decoded.exp < Date.now() / 1000 : true;
   } catch (err) {
     return true;
   }
@@ -22,7 +21,7 @@ const isTokenExpired = (token: string) => {
 
 const verifyToken = (token: string) => {
   try {
-    return isTokenExpired(token);
+    return !isTokenExpired(token);
   } catch (err) {
     throw new Error("Invalid token");
   }

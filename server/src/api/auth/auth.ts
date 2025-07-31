@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Roles } from "../../enums/roles";
-import { createKey } from "../../service/metadata";
+import { createKey, getKeyByUserId } from "../../service/metadata";
 import {
   addUser,
   getUserByEmail,
@@ -18,16 +18,25 @@ router.post(Route.auth.login.email, async (req, res) => {
   const user = await getUserPrivateData(email);
 
   if (!user || !user?.password) {
-    res.status(400).send({ message: "User not found." });
+    res.status(400).send({ error: "User not found." });
+    return;
   }
 
   const isPasswordValid = await compare(password, user?.password!);
 
   if (!isPasswordValid) {
-    res.status(400).send({ message: "Invalid password." });
+    res.status(400).send({ error: "Invalid password." });
+    return;
   }
 
   const token = generateToken({ email, user_id: user?.user_id });
+  const key = await getKeyByUserId(user?.user_id!);
+
+  if (!key) {
+    res.status(400).send({ error: "API key not found." });
+    return;
+  }
+
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -35,18 +44,26 @@ router.post(Route.auth.login.email, async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  res.send({ success: "true", token });
+  res.send({
+    success: "true",
+    metadata: {
+      key: key!.key,
+      role: key!.role,
+    },
+  });
 });
 
-router.post(Route.auth.signup.email, async (req, res) => {
+router.post(Route.auth.signup.email, async (req, res, next) => {
   const { email, password, role, ...others } = req.body;
-  console.log("SignUp request data:", req.body);
+
   const result = await getUserByEmail(email);
 
   if (result) {
-    res.status(400).send({ message: "Email already exists." });
+    console.log("Email already exists:", email);
+    res.status(400).send({ error: "Email already exists." });
+    return;
   }
-
+  console.log("Creating new user:", email);
   const encryptedPassword = await encrypt(password);
 
   const userId = await addUser(email, encryptedPassword, others);
@@ -62,7 +79,13 @@ router.post(Route.auth.signup.email, async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  res.send({ success: true, key });
+  res.send({
+    success: true,
+    metadata: {
+      key: key.key,
+      role: key.role,
+    },
+  });
 });
 
 router.get(Route.user.logout, (req, res) => {

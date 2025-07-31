@@ -3,7 +3,8 @@ import { useFetcher } from "@/url/Fetcher";
 import { useQuery } from "@tanstack/react-query";
 
 const useMetadata = () => {
-  const mdFetcher = useFetcher(ApiUrl.metadata.get, { useKey: false });
+  const mdFetcher = useFetcher(ApiUrl.metadata.get);
+  const key = sessionStorage.getItem("key");
   const metadata = useQuery({
     queryKey: ["metadata"],
     queryFn: async () => {
@@ -14,6 +15,9 @@ const useMetadata = () => {
       const data = await response.json();
       return data;
     },
+    retry: 2,
+    refetchOnWindowFocus: false,
+    enabled: !!key,
   });
 
   return {

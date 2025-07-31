@@ -9,8 +9,7 @@ const compare = async (text: string, hash: string) => {
 };
 
 const generateApiKey = async (): Promise<string> => {
-  const key = randomBytes(32).toString("hex");
-  return await hash(key, 10);
+  return randomBytes(32).toString("hex");
 };
 
 export { compare, encrypt, generateApiKey };

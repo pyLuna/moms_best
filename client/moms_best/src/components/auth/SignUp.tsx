@@ -1,9 +1,11 @@
 import { useUser } from "@/contexts/UserContext";
 import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
+import { LabelCheckbox } from "../ui/checkbox";
+import { ComboboxPopover } from "../ui/combobox";
 import {
   Dialog,
   DialogContent,
@@ -18,34 +20,45 @@ type LoginProps = {
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
+const roles = [
+  { value: "seller", label: "Trade or sell something" },
+  { value: "user", label: "Interact and chat with everyone" },
+];
+
+if (import.meta.env.MODE === "development") {
+  roles.push({ value: "admin", label: "Admin" });
+}
+
 const SignUp = ({ open, setOpen }: LoginProps) => {
+  const [selectedRole, setSelectedRole] = useState<string>("user");
   const user = useUser();
-  const fetcher = useFetcher(ApiUrl.signup.email, { useKey: false });
+  const fetcher = useFetcher(ApiUrl.signup.email);
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const formData = new FormData(event.target as HTMLFormElement);
+    formData.append("role", selectedRole);
     const data = Object.fromEntries(formData.entries());
-    console.log("SignUp data:", data);
-    const result = await fetcher.post(data);
 
+    const result = await fetcher.post(data);
+    const body = await result.json();
     if (!result.ok) {
-      console.error("SignUp failed", await result.json());
-      toast.error("Sign Up failed. Please check your credentials.");
-      throw new Error("Failed to login");
+      toast.error(`Sign Up failed. ${body.error || "Please try again."}`);
+      throw new Error(body.error);
     } else {
       toast.success("Sign Up successful!", {
         description: "Welcome back!",
       });
 
-      const apiKey = result.headers.get("x-api-key");
-      if (!apiKey) {
+      const metadata = body.metadata;
+      if (!metadata) {
         console.error("API key not found in response headers");
         toast.error("Sign Up successful, but API key not found.");
         return;
       }
-      sessionStorage.setItem("key", apiKey);
+      user.setMetadata?.(() => metadata);
+      sessionStorage.setItem("apiKey", metadata.key);
       user.refetch();
       setOpen(false);
     }
@@ -65,32 +78,49 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
         </DialogHeader>
 
         <form
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 md:gap-6"
           onSubmit={submitHandler}
         >
+          <ComboboxPopover
+            items={roles}
+            label="I want to"
+            selectedValue={selectedRole}
+            placeholder="Select Role"
+            onChange={(value) => setSelectedRole(value)}
+          />
           <LabeledInput
             label="First Name"
             name="firstName"
             type="text"
             placeholder="John"
+            required
           />
           <LabeledInput
             label="Last Name"
             name="lastName"
             type="text"
             placeholder="Doe"
+            required
           />
           <LabeledInput
             label="Email"
             name="email"
             type="email"
             placeholder="john.doe@email.com"
+            required
           />
           <LabeledInput
             name="password"
             label="Password"
             type="password"
             placeholder="••••••••"
+            required
+          />
+
+          <LabelCheckbox
+            id="remember-me"
+            name="rememberMe"
+            label="Remember Me"
           />
           <SubmitButton text="Register" />
         </form>

@@ -1,5 +1,8 @@
 import { useUser } from "@/contexts/UserContext";
+import { ApiUrl } from "@/url/ApiUrl";
+import { useFetcher } from "@/url/Fetcher";
 import { Dispatch, SetStateAction } from "react";
+import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
 import { Button } from "../ui/button";
 import { LabelCheckbox } from "../ui/checkbox";
@@ -19,15 +22,28 @@ type LoginProps = {
 
 const Login = ({ open, setOpen }: LoginProps) => {
   const user = useUser();
+  const loginFetcher = useFetcher(ApiUrl.email);
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    await user.login(event, {
-      onSuccess: () => {
-        setOpen(false);
-      },
-    });
+    const formData = new FormData(event.target as HTMLFormElement);
+    const data = Object.fromEntries(formData.entries());
+    console.log("Login data:", data);
+    const result = await loginFetcher.post(data);
+    const body = await result.json();
+    console.log("Login response:", body);
+    if (!result.ok) {
+      toast.error("Login failed. Please check your credentials.");
+      throw new Error(body.error || "Failed to login");
+    } else {
+      user.setMetadata?.(() => body.metadata);
+      sessionStorage.setItem("apiKey", body.metadata?.key);
+      user?.refetch();
+      toast.success("Login successful!", {
+        description: "Welcome back!",
+      });
+    }
   };
 
   return (

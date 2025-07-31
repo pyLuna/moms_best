@@ -51,5 +51,5 @@ export const createKey = async (userId: string, role: Roles) => {
       return await client.insertOne(newKey);
     },
   });
-  return newKey;
+  return { ...newKey, key }; // Return the plain key for client use
 };
