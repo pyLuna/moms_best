@@ -9,6 +9,7 @@ class Route {
   };
   static user = {
     get: "/my",
+    logout: "/logout",
   };
 }
 

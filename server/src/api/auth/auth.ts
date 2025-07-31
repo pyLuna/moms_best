@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { Roles } from "../../enums/roles";
+import { createKey } from "../../service/metadata";
 import {
   addUser,
   getUserByEmail,
@@ -37,7 +39,7 @@ router.post(Route.auth.login.email, async (req, res) => {
 });
 
 router.post(Route.auth.signup.email, async (req, res) => {
-  const { email, password, ...others } = req.body;
+  const { email, password, role, ...others } = req.body;
   console.log("SignUp request data:", req.body);
   const result = await getUserByEmail(email);
 
@@ -51,6 +53,8 @@ router.post(Route.auth.signup.email, async (req, res) => {
 
   const token = generateToken({ email, user_id: userId.toString() });
 
+  const key = await createKey(userId.toString(), role as Roles);
+
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -58,7 +62,12 @@ router.post(Route.auth.signup.email, async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   });
 
-  res.send({ success: true, token });
+  res.send({ success: true, key });
+});
+
+router.get(Route.user.logout, (req, res) => {
+  res.clearCookie("token");
+  res.send({ success: true });
 });
 
 export default router;

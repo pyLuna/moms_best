@@ -1,16 +1,19 @@
-export class Fetcher {
+class Fetcher {
   public static BASE_URL = import.meta.env.VITE_SERVER_URL;
   _path: string;
   _options: {
     headers: HeadersInit;
   };
 
-  constructor(path: string, headers?: HeadersInit) {
+  // Accept key as a constructor argument
+  constructor(path: string, key?: string | null, headers?: HeadersInit) {
+    const defaultHeaders: HeadersInit = {
+      "Content-Type": "application/json",
+      ...(key ? { "x-api-key": key } : {}),
+    };
     this._path = path;
     this._options = {
-      headers: headers || {
-        "Content-Type": "application/json",
-      },
+      headers: headers || defaultHeaders,
     };
   }
 
@@ -51,4 +54,13 @@ export class Fetcher {
   public patch(body: any): Promise<Response> {
     return fetch(this.getFullUrl(), this._getRequestInit("PATCH", body));
   }
+}
+
+// Factory hook to create Fetcher instance with context key
+export function useFetcher(
+  path: string,
+  options?: { useKey?: boolean; headers?: HeadersInit }
+) {
+  const key = sessionStorage.getItem("apiKey");
+  return new Fetcher(path, key, options?.headers);
 }

@@ -1,5 +1,5 @@
 const USERS = "users";
 const USERS_PRIVATE = "users_private";
-const API_KEY = "api_keys";
+const METADATA = "user_metadata";
 
-export { API_KEY, USERS, USERS_PRIVATE };
+export { METADATA, USERS, USERS_PRIVATE };

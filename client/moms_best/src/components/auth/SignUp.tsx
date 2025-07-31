@@ -1,6 +1,6 @@
 import { useUser } from "@/contexts/UserContext";
 import { ApiUrl } from "@/url/ApiUrl";
-import { Fetcher } from "@/url/Fetcher";
+import { useFetcher } from "@/url/Fetcher";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
@@ -20,32 +20,34 @@ type LoginProps = {
 
 const SignUp = ({ open, setOpen }: LoginProps) => {
   const user = useUser();
+  const fetcher = useFetcher(ApiUrl.signup.email, { useKey: false });
 
   const submitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const signUpApi = new Fetcher(ApiUrl.signup.email);
-
     const formData = new FormData(event.target as HTMLFormElement);
     const data = Object.fromEntries(formData.entries());
     console.log("SignUp data:", data);
-    const result = await signUpApi.post(data);
+    const result = await fetcher.post(data);
 
     if (!result.ok) {
       console.error("SignUp failed", await result.json());
-      toast.error("SignUp failed. Please check your credentials.");
+      toast.error("Sign Up failed. Please check your credentials.");
       throw new Error("Failed to login");
     } else {
-      toast.success("SignUp successful!", {
+      toast.success("Sign Up successful!", {
         description: "Welcome back!",
       });
 
-      await user.login(event, {
-        onSuccess: () => {
-          setOpen(false);
-        },
-        displayToast: false,
-      });
+      const apiKey = result.headers.get("x-api-key");
+      if (!apiKey) {
+        console.error("API key not found in response headers");
+        toast.error("Sign Up successful, but API key not found.");
+        return;
+      }
+      sessionStorage.setItem("key", apiKey);
+      user.refetch();
+      setOpen(false);
     }
   };
 

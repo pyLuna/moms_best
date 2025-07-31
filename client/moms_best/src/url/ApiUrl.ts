@@ -5,5 +5,9 @@ export const ApiUrl = {
   },
   user: {
     my: "/user/my",
+    logout: "/auth/logout",
+  },
+  metadata: {
+    get: "/metadata",
   },
 };

@@ -3,7 +3,7 @@ import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
 import serverless from "serverless-http";
-import auth from "./api/auth/email";
+import auth from "./api/auth/auth";
 import user from "./api/user/user";
 import { PORT } from "./constants";
 import { verifyApiKey } from "./middleware/verify/api.key";

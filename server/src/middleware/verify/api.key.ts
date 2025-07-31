@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { findKey } from "../../service/key";
+import { findKey } from "../../service/metadata";
 import { roles } from "../../service/rbac";
 import { ServerPermissions } from "../../types/permissions";
 import { compare } from "../../utils/hashing";
@@ -11,7 +11,6 @@ export const verifyApiKey = async (
   next: NextFunction
 ) => {
   if (isSkip(req.path)) return next();
-
   const apiKeyHeader = req.headers["x-api-key"];
   const apiKey = Array.isArray(apiKeyHeader) ? apiKeyHeader[0] : apiKeyHeader;
 
