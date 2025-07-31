@@ -6,8 +6,10 @@ import serverless from "serverless-http";
 import auth from "./api/auth/email";
 import user from "./api/user/user";
 import { PORT } from "./constants";
-import { verifyAuthorization } from "./middleware/global";
+import { verifyApiKey } from "./middleware/verify/api.key";
+import { verifyAuthorization } from "./middleware/verify/auth";
 import initMongoDB from "./mongo_db/init";
+import { wrapAsync } from "./utils/misc";
 
 config({ path: ".env.development" });
 // Load environment variables
@@ -20,7 +22,7 @@ const corsOptions = {
   origin: process.env.ALLOWED_ORIGINS?.split(",") || ["http://localhost:3000"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
 };
 
 app.use(express.json());
@@ -29,7 +31,7 @@ app.use(cookieParser());
 
 app.use(cors(corsOptions));
 
-app.use(verifyAuthorization);
+app.use(verifyAuthorization, wrapAsync(verifyApiKey));
 
 app.use("/user", user);
 

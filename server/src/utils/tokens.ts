@@ -19,4 +19,13 @@ const isTokenExpired = (token: string) => {
     return true;
   }
 };
-export { decodeToken, generateToken, isTokenExpired };
+
+const verifyToken = (token: string) => {
+  try {
+    return isTokenExpired(token);
+  } catch (err) {
+    throw new Error("Invalid token");
+  }
+};
+
+export { decodeToken, generateToken, isTokenExpired, verifyToken };

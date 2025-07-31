@@ -1,8 +1,5 @@
-
 const USERS = "users";
 const USERS_PRIVATE = "users_private";
+const API_KEY = "api_keys";
 
-export {
-    USERS,
-    USERS_PRIVATE
-}
+export { API_KEY, USERS, USERS_PRIVATE };
