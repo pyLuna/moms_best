@@ -1,6 +1,11 @@
 import { Router } from "express";
 import { Roles } from "../../enums/roles";
-import { createKey, getKeyByUserId } from "../../service/metadata";
+import {
+  createKey,
+  getKeyByUserId,
+  updateField,
+  updateOnlineStatus,
+} from "../../service/metadata";
 import {
   addUser,
   getUserByEmail,
@@ -8,7 +13,7 @@ import {
 } from "../../service/user";
 import { compare, encrypt } from "../../utils/hashing";
 import Route from "../../utils/route";
-import { generateToken } from "../../utils/tokens";
+import { decodeToken, generateToken } from "../../utils/tokens";
 
 const router = Router();
 
@@ -40,7 +45,14 @@ router.post(Route.auth.login.email, async (req, res) => {
     res.status(400).send({ error: "API key not found." });
     return;
   }
+
   (req as any).role = key.role;
+
+  updateField(user?.user_id!, {
+    last_logged_in: new Date(),
+    online: true,
+  });
+
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -96,6 +108,8 @@ router.post(Route.auth.signup.email, async (req, res, next) => {
 });
 
 router.get(Route.user.logout, (req, res) => {
+  const userData = decodeToken(req.cookies.token);
+  updateOnlineStatus(userData?.user_id!, false);
   res.clearCookie("token");
   res.send({ success: true });
 });

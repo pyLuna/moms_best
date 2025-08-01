@@ -1,6 +1,21 @@
-# ROLES
+# METADATA
 
-Implementing roles are quiet tricky, at least for me. Until now, I am not yet decided the structure of it. But let's work on this for now.
+This will be the users metadata this contains the following type
+
+```ts
+interface Metadata {
+  _id: ObjectId;
+  role: Roles;
+  key: string;
+  last_logged_in?: Date;
+  created_at: Date;
+  user_id: string;
+}
+```
+
+## API Key
+
+API Key are not used for the authentication, it can only authorize the logged in user to do things that they are permitted to do.
 
 ## Permissions
 
@@ -8,12 +23,19 @@ There will be three (3) permission `AdminPermission` for the admins, like myself
 
 ### Roles
 
+Roles must be provided with an API Key, without it the user does not have a permission to do such things.
+
 3 Roles that `moms_best` allows:
 
 - `admin` - who has access on everything, basically a super admin
 - `seller` - a normal `user` just with **Products** permission
 - `user` - normal consumer/user of the app
 - `guest` - can only read but can not interact
+
+### Statuses
+
+- `online` - if the user is logged in and active
+- `last_logged_in` - when was the last time user logged in
 
 ## Implementation
 
@@ -36,3 +58,7 @@ router.get(
   }
 );
 ```
+
+### Details
+
+`rbac.ts` contains the permissions for each user, this must not be changed unless needed.
