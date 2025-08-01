@@ -16,7 +16,6 @@ const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
 
   const handleNavigate = (url?: string) => {
     const shouldNavigate = navigateRef?.current?.();
-    console.log("MobileSideNav: handleNavigate", url, shouldNavigate);
     toggle(false); // Close the side nav after navigation
     if (!shouldNavigate) return;
     // Perform navigation

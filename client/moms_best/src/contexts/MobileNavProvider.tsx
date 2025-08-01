@@ -30,7 +30,6 @@ const MobileNavProvider = ({ children }: { children: ReactNode }) => {
 
   // Function to set the navigation callback
   const setNavigateCallback = (callback: () => boolean) => {
-    console.log("Setting navigate callback", callback);
     navigateRef.current = callback;
   };
 

@@ -47,7 +47,6 @@ const useAuth = (): UserHookType => {
   });
 
   const removeQuery = () => {
-    console.log("Logging out and removing user data");
     localStorage.removeItem("apiKey");
     sessionStorage.removeItem("apiKey");
     queryClient.resetQueries({ queryKey: ["user"] });

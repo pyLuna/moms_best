@@ -29,7 +29,6 @@ class Fetcher {
     if (body) {
       requestInit.body = JSON.stringify(body);
     }
-    console.log("Request Init:", requestInit, method);
     return requestInit;
   }
 

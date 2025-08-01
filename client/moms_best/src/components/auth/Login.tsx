@@ -30,10 +30,8 @@ const Login = ({ open, setOpen }: LoginProps) => {
     const formData = new FormData(event.target as HTMLFormElement);
 
     const data = Object.fromEntries(formData.entries());
-    console.log("Login data:", data);
     const result = await loginFetcher.post(data);
     const body = await result.json();
-    console.log("Login response:", body);
     if (!result.ok) {
       toast.error("Login failed. Please check your credentials.");
       throw new Error(body.error || "Failed to login");
