@@ -1,5 +1,5 @@
 import { Collection, Document } from "mongodb";
-import { COLLECTION } from "src/constants";
+import { COLLECTION } from "../constants";
 import { client } from "./init";
 
 interface QueryParams {
