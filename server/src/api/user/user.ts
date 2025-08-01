@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authorize } from "../../middleware/verify/api.key";
+import { getUserMetadata } from "../../service/metadata";
 import { getUserByEmail } from "../../service/user";
 import Route from "../../utils/route";
 import { decodeToken } from "../../utils/tokens";
@@ -17,7 +18,9 @@ router.get(
     console.log("userData:", userData);
 
     const user = await getUserByEmail(userData.email);
-    res.send({ user });
+    const metadata = await getUserMetadata(user._id.toString());
+    console.log("User Metadata:", metadata);
+    res.send({ user, metadata });
     return;
   }
 );

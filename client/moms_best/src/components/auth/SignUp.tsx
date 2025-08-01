@@ -58,7 +58,7 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
         return;
       }
       user.setMetadata?.(() => metadata);
-      user.setKey(metadata.key);
+      user.setKey(metadata.key, data.rememberMe === "on");
 
       user.refetch();
       setOpen(false);

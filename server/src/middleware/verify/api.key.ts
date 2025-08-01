@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { findKey } from "../../service/metadata";
+import { findMetadata } from "../../service/metadata";
 import { roles } from "../../service/rbac";
 import { ServerPermissions } from "../../types/permissions";
 import { isSkip } from "../../utils/misc";
-import { decodeToken } from "../../utils/tokens";
 
 export const verifyApiKey = async (
   req: Request,
@@ -13,8 +12,6 @@ export const verifyApiKey = async (
   if (isSkip(req.path)) return next();
 
   const apiKeyHeader = req.headers["x-api-key"];
-  console.log("API Verification Cookie:", req.cookies);
-  const token = decodeToken(req.cookies.token);
 
   if (!apiKeyHeader) {
     res.status(401).send({ error: "API key is missing" });
@@ -29,27 +26,18 @@ export const verifyApiKey = async (
   }
 
   try {
-    const record = await findKey(apiKey);
+    const record = await findMetadata(apiKey);
 
-    if (!record) {
+    if (!record || !record?.key || apiKey !== record!.key) {
       res.status(403).send({ error: "Invalid API key" });
       return;
     }
-
-    const isValid = apiKey === record!.key;
-
-    if (!isValid) {
-      res.status(403).send({ error: "Invalid API key" });
-      return;
-    }
+    (req as any).role = record.role;
   } catch (error) {
     console.error("Database error in verifyApiKey:", error);
     res.status(500).send({ error: "Database connection error" });
     return;
   }
-
-  // at this point token should be valid
-  (req as any).role = token.role;
 
   next();
 };

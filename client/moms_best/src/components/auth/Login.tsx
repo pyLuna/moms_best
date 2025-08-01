@@ -28,6 +28,7 @@ const Login = ({ open, setOpen }: LoginProps) => {
     event.preventDefault();
 
     const formData = new FormData(event.target as HTMLFormElement);
+
     const data = Object.fromEntries(formData.entries());
     console.log("Login data:", data);
     const result = await loginFetcher.post(data);
@@ -39,7 +40,7 @@ const Login = ({ open, setOpen }: LoginProps) => {
     } else {
       user.setMetadata?.(() => body.metadata);
       user.refetch();
-      user.setKey(body.metadata.key);
+      user.setKey(body.metadata.key, data.rememberMe === "on");
       toast.success("Login successful!", {
         description: "Welcome back!",
       });
@@ -79,6 +80,7 @@ const Login = ({ open, setOpen }: LoginProps) => {
             <LabelCheckbox
               id="remember-me"
               label="Remember Me"
+              name="rememberMe"
             />
             <Button
               variant="link"

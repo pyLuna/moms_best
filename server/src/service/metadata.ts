@@ -5,7 +5,7 @@ import query from "../mongo_db/query";
 import { Metadata } from "../types/metadata";
 import { generateApiKey } from "../utils/hashing";
 
-export const findKey = async (key?: string) => {
+export const findMetadata = async (key?: string) => {
   if (!key) return null;
   const result = await query<Metadata>({
     collection_name: METADATA,
@@ -17,21 +17,21 @@ export const findKey = async (key?: string) => {
   return result;
 };
 
-export const getKeyByUserId = async (userId: string) => {
+export const getUserMetadata = async (user_id: string) => {
   const result = await query<Metadata>({
     collection_name: METADATA,
     queryFn: async (client) => {
-      return await client.findOne({ user_id: userId });
+      return await client.findOne({ user_id });
     },
   });
   if (!result) return null;
   return result;
 };
 
-export const createKey = async (userId: string, role: Roles) => {
+export const createKey = async (user_id: string, role: Roles) => {
   const key = await generateApiKey();
   console.log("Generated API key:", key);
-  const existingKey = await findKey(key);
+  const existingKey = await findMetadata(key);
   if (existingKey) {
     console.warn("Metadata already exists, generating a new one.");
     throw new Error("Failed to create key: Metadata already exists");
@@ -43,7 +43,7 @@ export const createKey = async (userId: string, role: Roles) => {
     key,
     last_logged_in: new Date(),
     created_at: new Date(),
-    user_id: userId,
+    user_id: user_id,
     online: true,
   };
   await query<Metadata>({
