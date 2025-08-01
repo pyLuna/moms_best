@@ -28,7 +28,7 @@ export const getUserMetadata = async (user_id: string) => {
   return result;
 };
 
-export const createKey = async (user_id: string, role: Roles) => {
+export const createMetadata = async (user_id: string, role: Roles) => {
   const key = await generateApiKey();
   console.log("Generated API key:", key);
   const existingKey = await findMetadata(key);

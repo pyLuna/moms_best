@@ -1,9 +1,7 @@
-import { User } from "@/types/user";
+import { User, UserWithMetadata } from "@/types/user";
 import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type UserHookType = {
   user: User | undefined;
@@ -15,44 +13,48 @@ export type UserHookType = {
   isSuccess: boolean;
   isLoggedIn: boolean;
   metadata?: Record<string, any> | null;
-  setMetadata?: React.Dispatch<
-    React.SetStateAction<Record<string, any> | null>
-  >;
   setKey: (key: string, remember: boolean) => void;
   getKey: () => string | null;
+  logout: () => void;
 };
 
 const useAuth = (): UserHookType => {
+  const queryClient = useQueryClient();
   const setKey = (key: string, remember: boolean) =>
     remember
       ? localStorage.setItem("apiKey", key)
       : sessionStorage.setItem("apiKey", key);
   const getKey = () =>
     localStorage.getItem("apiKey") || sessionStorage.getItem("apiKey");
-  const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
   const myFetcher = useFetcher(ApiUrl.user.my);
 
   const fetchStatus = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      console.log("key:", getKey());
       const response = await myFetcher.get();
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch user status");
       }
-      return data as User;
+      return data as UserWithMetadata;
     },
     retry: false,
     staleTime: 1000 * 60 * 5, // 5 minutes
     gcTime: 1000 * 60 * 2, // 2 minutes
     refetchOnWindowFocus: false,
     refetchOnReconnect: true,
-    enabled: !!metadata?.key || !!getKey(),
+    enabled: !!getKey(),
   });
 
+  const removeQuery = () => {
+    console.log("Logging out and removing user data");
+    localStorage.removeItem("apiKey");
+    sessionStorage.removeItem("apiKey");
+    queryClient.resetQueries({ queryKey: ["user"] });
+  };
+
   if (fetchStatus.isError) {
-    toast.error(fetchStatus.error.toString());
+    console.error("Error fetching user data:", fetchStatus.error);
   }
 
   return {
@@ -64,8 +66,7 @@ const useAuth = (): UserHookType => {
     refetch: fetchStatus.refetch,
     isFetched: fetchStatus.isFetched,
     isSuccess: fetchStatus.isSuccess,
-    metadata: metadata,
-    setMetadata,
+    logout: removeQuery,
     setKey,
     getKey,
   };

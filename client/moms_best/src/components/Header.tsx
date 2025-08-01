@@ -1,4 +1,5 @@
 import { useMobileNav } from "@/contexts/MobileNavProvider";
+import { useUser } from "@/contexts/UserContext";
 import { MenuIcon } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -6,12 +7,13 @@ import { Url } from "../url/Url";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import IconName from "./icon/IconName";
-import MobileSideNav from "./nav/MobileSideNav";
+import LoggedInHeader from "./LoggedInHeader";
 import { ModeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
 
 const Header = () => {
   const { toggle } = useMobileNav();
+  const { isLoggedIn } = useUser();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signUpOpen, setSignUpOpen] = useState(false);
 
@@ -23,31 +25,24 @@ const Header = () => {
           className="text-primary-200 grow"
         />
         <nav className="flex items-center justify-between gap-2 md:gap-4">
-          {/* Hide nav on mobile */}
           <ModeToggle />
           <nav className="gap-4 hidden md:block items-center justify-end">
-            <Link to={Url.home}>Home</Link>
-            <Link to="">Test</Link>
-            <Link to="">Test</Link>
-            <Button
-              variant="link"
-              onClick={() => setLoginOpen(true)}
-            >
-              Sign In
-            </Button>
-            <Button onClick={() => setSignUpOpen(true)}>Create Account</Button>
+            {isLoggedIn ? (
+              <LoggedInHeader />
+            ) : (
+              <DefaultHeader
+                setLoginOpen={setLoginOpen}
+                setSignUpOpen={setSignUpOpen}
+              />
+            )}
           </nav>
           <Button
-            className="md:hidden"
             variant="ghost"
+            className="md:hidden"
             onClick={() => toggle()}
           >
             <MenuIcon />
           </Button>
-          <MobileSideNav
-            onSignIn={() => setLoginOpen(true)}
-            onSignUp={() => setSignUpOpen(true)}
-          />
         </nav>
       </div>
       <Login
@@ -58,6 +53,29 @@ const Header = () => {
         open={signUpOpen}
         setOpen={setSignUpOpen}
       />
+    </>
+  );
+};
+
+const DefaultHeader = ({
+  setLoginOpen,
+  setSignUpOpen,
+}: {
+  setLoginOpen: (open: boolean) => void;
+  setSignUpOpen: (open: boolean) => void;
+}) => {
+  return (
+    <>
+      <Link to={Url.home}>Home</Link>
+      <Link to="">Test</Link>
+      <Link to="">Test</Link>
+      <Button
+        variant="link"
+        onClick={() => setLoginOpen(true)}
+      >
+        Sign In
+      </Button>
+      <Button onClick={() => setSignUpOpen(true)}>Create Account</Button>
     </>
   );
 };

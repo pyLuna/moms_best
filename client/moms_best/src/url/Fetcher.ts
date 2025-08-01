@@ -2,22 +2,24 @@ class Fetcher {
   public static BASE_URL = import.meta.env.VITE_SERVER_URL;
   _path: string;
   _options: {
-    headers: HeadersInit;
+    headers?: HeadersInit;
   };
 
   // Accept key as a constructor argument
-  constructor(path: string, key?: string | null, headers?: HeadersInit) {
-    const defaultHeaders: HeadersInit = {
-      "Content-Type": "application/json",
-      ...(key ? { "x-api-key": key } : {}),
-    };
+  constructor(path: string, headers?: HeadersInit) {
     this._path = path;
     this._options = {
-      headers: headers || defaultHeaders,
+      headers: headers,
     };
   }
 
   private _getRequestInit(method: string, body?: any) {
+    this._options.headers = {
+      "Content-Type": "application/json",
+      ...this._options.headers,
+      "x-api-key": (localStorage.getItem("apiKey") ||
+        sessionStorage.getItem("apiKey"))!,
+    };
     let requestInit: RequestInit = {
       method: method,
       headers: this._options.headers,
@@ -27,6 +29,7 @@ class Fetcher {
     if (body) {
       requestInit.body = JSON.stringify(body);
     }
+    console.log("Request Init:", requestInit, method);
     return requestInit;
   }
 
@@ -57,7 +60,5 @@ class Fetcher {
 }
 
 export function useFetcher(path: string, options?: { headers?: HeadersInit }) {
-  const key =
-    localStorage.getItem("apiKey") || sessionStorage.getItem("apiKey");
-  return new Fetcher(path, key, options?.headers);
+  return new Fetcher(path, options?.headers);
 }

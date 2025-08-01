@@ -26,6 +26,7 @@ export const verifyApiKey = async (
   }
 
   try {
+    console.log("Verifying API key:", apiKey);
     const record = await findMetadata(apiKey);
 
     if (!record || !record?.key || apiKey !== record!.key) {

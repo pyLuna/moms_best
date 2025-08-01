@@ -38,12 +38,12 @@ const Login = ({ open, setOpen }: LoginProps) => {
       toast.error("Login failed. Please check your credentials.");
       throw new Error(body.error || "Failed to login");
     } else {
-      user.setMetadata?.(() => body.metadata);
-      user.refetch();
       user.setKey(body.metadata.key, data.rememberMe === "on");
+      user.refetch();
       toast.success("Login successful!", {
         description: "Welcome back!",
       });
+      setOpen(false);
     }
   };
 

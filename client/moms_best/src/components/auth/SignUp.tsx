@@ -57,9 +57,7 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
         toast.error("Sign Up successful, but API key not found.");
         return;
       }
-      user.setMetadata?.(() => metadata);
       user.setKey(metadata.key, data.rememberMe === "on");
-
       user.refetch();
       setOpen(false);
     }
