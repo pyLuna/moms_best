@@ -58,7 +58,8 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
         return;
       }
       user.setMetadata?.(() => metadata);
-      sessionStorage.setItem("apiKey", metadata.key);
+      user.setKey(metadata.key);
+
       user.refetch();
       setOpen(false);
     }

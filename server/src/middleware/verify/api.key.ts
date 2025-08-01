@@ -40,6 +40,8 @@ export const verifyApiKey = async (
     res.status(403).send({ error: "Invalid API key" });
     return;
   }
+
+  // at this point token should be valid
   (req as any).role = token.role;
 
   next();
@@ -50,7 +52,7 @@ export const authorize = (permission: ServerPermissions) => {
     const roleName = (req as any).role;
 
     if (!roleName) {
-      res.status(403).json({ error: "Role not found in request!!!" });
+      res.status(403).json({ error: "Role not found in request" });
       return;
     }
 

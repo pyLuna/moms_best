@@ -18,11 +18,16 @@ export type UserHookType = {
   setMetadata?: React.Dispatch<
     React.SetStateAction<Record<string, any> | null>
   >;
+  setKey: (key: string) => void;
+  getKey: () => string | null;
 };
 
 const useAuth = (): UserHookType => {
   const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
-  const myFetcher = useFetcher(ApiUrl.user.my, metadata?.key);
+  const myFetcher = useFetcher(ApiUrl.user.my);
+
+  const setKey = (key: string) => sessionStorage.setItem("apiKey", key);
+  const getKey = () => sessionStorage.getItem("apiKey");
 
   const fetchStatus = useQuery({
     queryKey: ["user"],
@@ -58,6 +63,8 @@ const useAuth = (): UserHookType => {
     isSuccess: fetchStatus.isSuccess,
     metadata: metadata,
     setMetadata,
+    setKey,
+    getKey,
   };
 };
 

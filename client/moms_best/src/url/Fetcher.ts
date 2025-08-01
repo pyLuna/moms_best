@@ -56,10 +56,7 @@ class Fetcher {
   }
 }
 
-export function useFetcher(
-  path: string,
-  key?: string,
-  options?: { headers?: HeadersInit }
-) {
+export function useFetcher(path: string, options?: { headers?: HeadersInit }) {
+  const key = sessionStorage.getItem("apiKey");
   return new Fetcher(path, key, options?.headers);
 }

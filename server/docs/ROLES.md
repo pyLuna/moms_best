@@ -18,3 +18,21 @@ There will be three (3) permission `AdminPermission` for the admins, like myself
 ## Implementation
 
 Api key must be sent in headers as `x-api-key`. Middleware will automatically extract this and validated by the `validateApiKey` function.
+
+To add a role-based API use the `authorize(role)` to add as a middleware for that API Route
+
+Usage of `authorize()`
+
+```ts
+router.get(
+  Route.user.get,
+  authorize("read:users"), // Ensure the user has permission to read users
+  async (req, res) => {
+    const token = req.cookies.token;
+    const userData = decodeToken(token)!;
+    const user = await getUserByEmail(userData.email);
+    res.send({ user });
+    return;
+  }
+);
+```

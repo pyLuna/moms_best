@@ -39,7 +39,7 @@ const Login = ({ open, setOpen }: LoginProps) => {
     } else {
       user.setMetadata?.(() => body.metadata);
       user.refetch();
-      sessionStorage.setItem("apiKey", body.metadata?.key);
+      user.setKey(body.metadata.key);
       toast.success("Login successful!", {
         description: "Welcome back!",
       });
