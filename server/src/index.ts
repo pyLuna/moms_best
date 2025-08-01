@@ -22,11 +22,15 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
 };
+const json = express.json();
+console.log("Starting json", json);
+app.use(json);
 
-app.use(express.json());
+const cookie = cookieParser();
+console.log("Starting cookieParser", cookie);
+app.use(cookie);
 
-app.use(cookieParser());
-
+console.log("CORS Options:", corsOptions);
 app.use(cors(corsOptions));
 
 app.use(verifyAuthorization, verifyApiKey);
