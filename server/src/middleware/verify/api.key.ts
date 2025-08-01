@@ -13,6 +13,7 @@ export const verifyApiKey = async (
   if (isSkip(req.path)) return next();
 
   const apiKeyHeader = req.headers["x-api-key"];
+  console.log("API Verification Cookie:", req.cookies);
   const token = decodeToken(req.cookies.token);
 
   if (!apiKeyHeader) {
