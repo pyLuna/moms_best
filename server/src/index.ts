@@ -2,7 +2,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
-import serverless from "serverless-http";
 import auth from "./api/auth/auth";
 import user from "./api/user/user";
 import { PORT } from "./constants";
@@ -36,8 +35,6 @@ app.use("/user", user);
 
 app.use("/auth", auth);
 
-// Export the app for serverless deployment
-
 // Only start the server if not in serverless environment bump
 if (require.main === module) {
   app.listen(PORT, () => {
@@ -46,6 +43,3 @@ if (require.main === module) {
     console.log("ENV", process.env.DB_USER, process.env.DB_PASSWORD);
   });
 }
-
-module.exports = app;
-module.exports.handler = serverless(app);
