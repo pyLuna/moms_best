@@ -3,6 +3,7 @@ import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export type UserHookType = {
   user: User | undefined;
@@ -20,17 +21,18 @@ export type UserHookType = {
 };
 
 const useAuth = (): UserHookType => {
-  const myFetcher = useFetcher(ApiUrl.user.my);
   const [metadata, setMetadata] = useState<Record<string, any> | null>(null);
+  const myFetcher = useFetcher(ApiUrl.user.my, metadata?.key);
 
   const fetchStatus = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
+      console.log("User data fetched:", metadata);
       const response = await myFetcher.get();
-      if (!response.ok) {
-        throw new Error("Failed to fetch user status");
-      }
       const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch user status");
+      }
       return data as User;
     },
     retry: false,
@@ -40,6 +42,10 @@ const useAuth = (): UserHookType => {
     refetchOnReconnect: true,
     enabled: !!metadata?.key,
   });
+
+  if (fetchStatus.isError) {
+    toast.error(fetchStatus.error.toString());
+  }
 
   return {
     user: { ...fetchStatus.data } as User,

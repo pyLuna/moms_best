@@ -38,8 +38,8 @@ const Login = ({ open, setOpen }: LoginProps) => {
       throw new Error(body.error || "Failed to login");
     } else {
       user.setMetadata?.(() => body.metadata);
+      user.refetch();
       sessionStorage.setItem("apiKey", body.metadata?.key);
-      user?.refetch();
       toast.success("Login successful!", {
         description: "Welcome back!",
       });

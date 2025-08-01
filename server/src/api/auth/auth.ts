@@ -29,14 +29,18 @@ router.post(Route.auth.login.email, async (req, res) => {
     return;
   }
 
-  const token = generateToken({ email, user_id: user?.user_id });
   const key = await getKeyByUserId(user?.user_id!);
+  const token = generateToken({
+    email,
+    user_id: user?.user_id,
+    role: key?.role,
+  });
 
   if (!key) {
     res.status(400).send({ error: "API key not found." });
     return;
   }
-
+  (req as any).role = key.role;
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -68,9 +72,12 @@ router.post(Route.auth.signup.email, async (req, res, next) => {
 
   const userId = await addUser(email, encryptedPassword, others);
 
-  const token = generateToken({ email, user_id: userId.toString() });
-
   const key = await createKey(userId.toString(), role as Roles);
+  const token = generateToken({
+    email,
+    user_id: userId.toString(),
+    role: key?.role,
+  });
 
   res.cookie("token", token, {
     httpOnly: true,

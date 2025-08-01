@@ -56,8 +56,10 @@ class Fetcher {
   }
 }
 
-// Factory hook to create Fetcher instance with context key
-export function useFetcher(path: string, options?: { headers?: HeadersInit }) {
-  const key = sessionStorage.getItem("apiKey");
+export function useFetcher(
+  path: string,
+  key?: string,
+  options?: { headers?: HeadersInit }
+) {
   return new Fetcher(path, key, options?.headers);
 }
