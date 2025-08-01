@@ -1,23 +1,18 @@
 import { Collection, Document } from "mongodb";
+import { COLLECTION } from "src/constants";
 import { client } from "./init";
 
 interface QueryParams {
-  database_name?: string;
   collection_name: string;
   queryFn: (client: Collection<Document>) => any;
 }
 const query = async <T>({
-  database_name,
   collection_name,
   queryFn,
 }: QueryParams): Promise<T> => {
-  await client.connect();
-
-  const col = client.db(database_name || "moms_db").collection(collection_name);
+  const col = client.db(COLLECTION).collection(collection_name);
 
   const result = await queryFn(col);
-
-  await client.close();
 
   return result as T;
 };

@@ -11,6 +11,7 @@ export const verifyApiKey = async (
   next: NextFunction
 ) => {
   if (isSkip(req.path)) return next();
+
   const apiKeyHeader = req.headers["x-api-key"];
   const token = decodeToken(req.cookies.token);
 
@@ -21,23 +22,28 @@ export const verifyApiKey = async (
 
   const apiKey = Array.isArray(apiKeyHeader) ? apiKeyHeader[0] : apiKeyHeader;
 
-  console.log("API Key Header:", apiKeyHeader, apiKey);
   if (!apiKey) {
     res.status(401).send({ error: "API key is missing" });
     return;
   }
 
-  const record = await findKey(apiKey);
+  try {
+    const record = await findKey(apiKey);
 
-  if (!record) {
-    res.status(403).send({ error: "Invalid API key" });
-    return;
-  }
+    if (!record) {
+      res.status(403).send({ error: "Invalid API key" });
+      return;
+    }
 
-  const isValid = apiKey === record!.key;
+    const isValid = apiKey === record!.key;
 
-  if (!isValid) {
-    res.status(403).send({ error: "Invalid API key" });
+    if (!isValid) {
+      res.status(403).send({ error: "Invalid API key" });
+      return;
+    }
+  } catch (error) {
+    console.error("Database error in verifyApiKey:", error);
+    res.status(500).send({ error: "Database connection error" });
     return;
   }
 
