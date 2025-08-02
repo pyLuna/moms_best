@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { findMetadata } from "../../service/metadata";
+import { decodeToken } from "src/utils/tokens";
+import { getUserMetadata } from "../../service/metadata";
 import { roles } from "../../service/rbac";
 import { ServerPermissions } from "../../types/permissions";
 import { isSkip } from "../../utils/misc";
@@ -10,33 +11,33 @@ export const verifyApiKey = async (
   next: NextFunction
 ) => {
   if (isSkip(req.path)) return next();
+  let code = 403;
 
-  const apiKeyHeader = req.headers["x-api-key"];
+  const token = req.cookies.token;
 
-  if (!apiKeyHeader) {
-    res.status(401).send({ error: "API key is missing" });
+  if (!token) {
+    res.status(401).send({ error: "Unauthorized: No token provided" });
     return;
   }
 
-  const apiKey = Array.isArray(apiKeyHeader) ? apiKeyHeader[0] : apiKeyHeader;
-
-  if (!apiKey) {
-    res.status(401).send({ error: "API key is missing" });
+  const userData = decodeToken(token);
+  if (!userData || !userData.user_id) {
+    res.status(403).send({ error: "Invalid token" });
     return;
   }
-
+  const user_id = userData.user_id;
   try {
-    console.log("Verifying API key:", apiKey);
-    const record = await findMetadata(apiKey);
+    const record = await getUserMetadata(user_id);
 
-    if (!record || !record?.key || apiKey !== record!.key) {
+    if (!record || !record?.key || user_id !== record!.user_id) {
       res.status(403).send({ error: "Invalid API key" });
       return;
     }
     (req as any).role = record.role;
+    (req as any).apiKey = record.key;
   } catch (error) {
     console.error("Database error in verifyApiKey:", error);
-    res.status(500).send({ error: "Database connection error" });
+    res.status(code).send({ error: error });
     return;
   }
 

@@ -13,19 +13,11 @@ export type UserHookType = {
   isSuccess: boolean;
   isLoggedIn: boolean;
   metadata?: Record<string, any> | null;
-  setKey: (key: string, remember: boolean) => void;
-  getKey: () => string | null;
   logout: () => void;
 };
 
 const useAuth = (): UserHookType => {
   const queryClient = useQueryClient();
-  const setKey = (key: string, remember: boolean) =>
-    remember
-      ? localStorage.setItem("apiKey", key)
-      : sessionStorage.setItem("apiKey", key);
-  const getKey = () =>
-    localStorage.getItem("apiKey") || sessionStorage.getItem("apiKey");
   const myFetcher = useFetcher(ApiUrl.user.my);
 
   const fetchStatus = useQuery({
@@ -43,7 +35,6 @@ const useAuth = (): UserHookType => {
     gcTime: 1000 * 60 * 2, // 2 minutes
     refetchOnWindowFocus: false,
     refetchOnReconnect: true,
-    enabled: !!getKey(),
   });
 
   const removeQuery = () => {
@@ -66,8 +57,6 @@ const useAuth = (): UserHookType => {
     isFetched: fetchStatus.isFetched,
     isSuccess: fetchStatus.isSuccess,
     logout: removeQuery,
-    setKey,
-    getKey,
   };
 };
 

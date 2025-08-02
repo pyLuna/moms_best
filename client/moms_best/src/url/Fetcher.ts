@@ -17,8 +17,6 @@ class Fetcher {
     this._options.headers = {
       "Content-Type": "application/json",
       ...this._options.headers,
-      "x-api-key": (localStorage.getItem("apiKey") ||
-        sessionStorage.getItem("apiKey"))!,
     };
     let requestInit: RequestInit = {
       method: method,

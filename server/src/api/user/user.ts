@@ -12,13 +12,14 @@ router.get(
   authorize("read:users"), // Ensure the user has permission to read users
   async (req, res) => {
     const token = req.cookies.token;
-    console.log("Router: Token from request:", token);
     const userData = decodeToken(token)!;
-
-    console.log("userData:", userData);
 
     const user = await getUserByEmail(userData.email);
     const metadata = await getUserMetadata(user._id.toString());
+
+    // delete api key from metadata
+    delete metadata!["key"];
+
     console.log("User Metadata:", metadata);
     res.send({ user, metadata });
     return;

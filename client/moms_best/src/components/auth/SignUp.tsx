@@ -53,11 +53,9 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
 
       const metadata = body.metadata;
       if (!metadata) {
-        console.error("API key not found in response headers");
-        toast.error("Sign Up successful, but API key not found.");
+        console.error("No metadata returned from signup");
         return;
       }
-      user.setKey(metadata.key, data.rememberMe === "on");
       user.refetch();
       setOpen(false);
     }

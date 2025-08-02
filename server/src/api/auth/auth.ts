@@ -108,7 +108,6 @@ router.post(Route.auth.signup.email, async (req, res) => {
   res.send({
     success: true,
     metadata: {
-      key: metadata.key,
       role: metadata.role,
     },
   });
