@@ -10,14 +10,14 @@ const LabeledInput = ({
   type?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
-    <div className="flex flex-col gap-2">
-      <Label>{label}</Label>
+    <Label className="flex flex-col gap-2 items-start">
+      {label}
       <Input
         className="text-sm"
         type={type}
         {...props}
       />
-    </div>
+    </Label>
   );
 };
 

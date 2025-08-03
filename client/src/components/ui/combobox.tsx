@@ -16,11 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-type Items = {
-  value: string;
-  label: string;
-};
+import { Items } from "@/types/misc";
 
 export function ComboboxPopover({
   items,
@@ -57,8 +53,8 @@ export function ComboboxPopover({
               className="justify-between grow flex items-center"
             >
               <span>
-                {selectedValue ? (
-                  <>{selectedItem?.label}</>
+                {selectedItem ? (
+                  <>{selectedItem.label}</>
                 ) : (
                   <>{placeholder ?? "Select Item"}</>
                 )}

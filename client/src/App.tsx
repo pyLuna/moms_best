@@ -1,7 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router";
-import Header from "./components/Header";
+import Header from "./components/header/Header";
+import HeadLoader from "./components/header/HeadLoader";
 import { Toaster } from "./components/ui/sonner";
+import CategoryProvider from "./contexts/CategoryProvider";
 import MobileNavProvider from "./contexts/MobileNavProvider";
 import { ThemeProvider } from "./contexts/ThemeProvider";
 import UserContextProvider from "./contexts/UserContext";
@@ -18,13 +20,16 @@ function App() {
           storageKey="vite-ui-theme"
         >
           <UserContextProvider>
-            <BrowserRouter>
-              <main className="bg-background grid grid-rows-[72px_1fr] mx-auto h-screen overflow-hidden">
-                <Header />
-                <PageRoutes />
-              </main>
-              <Toaster />
-            </BrowserRouter>
+            <CategoryProvider>
+              <BrowserRouter>
+                <HeadLoader />
+                <main className="bg-background grid grid-rows-[120px_1fr] md:grid-rows-[70px_1fr] mx-auto h-screen">
+                  <Header />
+                  <PageRoutes />
+                </main>
+                <Toaster />
+              </BrowserRouter>
+            </CategoryProvider>
           </UserContextProvider>
         </ThemeProvider>
       </MobileNavProvider>

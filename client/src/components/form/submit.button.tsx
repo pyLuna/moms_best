@@ -8,8 +8,7 @@ const SubmitButton = ({
   ...props
 }: {
   children: ReactNode;
-  [key: string]: any;
-}) => {
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const form = useFormStatus();
 
   return (

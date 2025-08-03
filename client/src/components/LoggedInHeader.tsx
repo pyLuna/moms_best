@@ -5,17 +5,18 @@ import AppLink from "./ui/button.link";
 
 const LoggedInHeader = () => {
   const { logout } = useUser();
+  const variant = "ghost";
 
   return (
     <nav className="hidden md:flex items-center gap-4">
       <AppLink
-        variant="ghost"
+        variant={variant}
         href={Url.home}
       >
         Home
       </AppLink>
       <Button
-        variant="ghost"
+        variant={variant}
         onClick={logout}
       >
         Logout
