@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev:server": "npm run dev --prefix server/",
-    "dev:client": "npm run dev --prefix client/moms_best/",
+    "dev:client": "npm run dev --prefix client/",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "devDependencies": {
