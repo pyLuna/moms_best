@@ -18,9 +18,9 @@ const LoggedInHeader = () => {
   };
 
   return (
-    <>
+    <nav className="hidden md:flex items-center gap-4">
       <Button onClick={handleLogout}>Logout</Button>
-    </>
+    </nav>
   );
 };
 

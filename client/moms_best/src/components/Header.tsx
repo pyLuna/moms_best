@@ -8,6 +8,7 @@ import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import IconName from "./icon/IconName";
 import LoggedInHeader from "./LoggedInHeader";
+import MobileSideNav from "./nav/MobileSideNav";
 import { ModeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
 
@@ -26,6 +27,13 @@ const Header = () => {
         />
         <nav className="flex items-center justify-between gap-2 md:gap-4">
           <ModeToggle />
+          <Button
+            variant="ghost"
+            className="block md:hidden"
+            onClick={() => toggle()}
+          >
+            <MenuIcon />
+          </Button>
           <nav className="gap-4 hidden md:block items-center justify-end">
             {isLoggedIn ? (
               <LoggedInHeader />
@@ -36,13 +44,6 @@ const Header = () => {
               />
             )}
           </nav>
-          <Button
-            variant="ghost"
-            className="md:hidden"
-            onClick={() => toggle()}
-          >
-            <MenuIcon />
-          </Button>
         </nav>
       </div>
       <Login
@@ -52,6 +53,10 @@ const Header = () => {
       <SignUp
         open={signUpOpen}
         setOpen={setSignUpOpen}
+      />
+      <MobileSideNav
+        onSignIn={() => setLoginOpen(true)}
+        onSignUp={() => setSignUpOpen(true)}
       />
     </>
   );

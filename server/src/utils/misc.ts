@@ -1,7 +1,11 @@
 import { NextFunction } from "express";
 import Route from "./route";
 
-const skippablePaths = [Route.auth.login.email, Route.auth.signup.email];
+const skippablePaths = [
+  Route.auth.login.email,
+  Route.auth.signup.email,
+  Route.user.logout,
+];
 
 // Helper to wrap async middleware
 export const wrapAsync =

@@ -19,6 +19,7 @@ export type UserHookType = {
 const useAuth = (): UserHookType => {
   const queryClient = useQueryClient();
   const myFetcher = useFetcher(ApiUrl.user.my);
+  const logoutFetcher = useFetcher(ApiUrl.user.logout);
 
   const fetchStatus = useQuery({
     queryKey: ["user"],
@@ -37,9 +38,8 @@ const useAuth = (): UserHookType => {
     refetchOnReconnect: true,
   });
 
-  const removeQuery = () => {
-    localStorage.removeItem("apiKey");
-    sessionStorage.removeItem("apiKey");
+  const logout = async () => {
+    await logoutFetcher.get();
     queryClient.resetQueries({ queryKey: ["user"] });
   };
 
@@ -56,7 +56,7 @@ const useAuth = (): UserHookType => {
     refetch: fetchStatus.refetch,
     isFetched: fetchStatus.isFetched,
     isSuccess: fetchStatus.isSuccess,
-    logout: removeQuery,
+    logout,
   };
 };
 

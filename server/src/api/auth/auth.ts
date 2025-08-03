@@ -117,6 +117,8 @@ router.get(Route.user.logout, (req, res) => {
   const userData = decodeToken(req.cookies.token);
   updateOnlineStatus(userData?.user_id!, false);
   res.clearCookie("token");
+  (req as any).key = null;
+  (req as any).role = null;
   res.send({ success: true });
 });
 
