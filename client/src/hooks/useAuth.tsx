@@ -1,10 +1,11 @@
-import { User, UserWithMetadata } from "@/types/user";
+import { UserWithMetadata } from "@/types/user";
 import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export type UserHookType = {
-  user: User | undefined;
+  user: UserWithMetadata | undefined;
   isLoading: boolean;
   isError: boolean;
   error: unknown;
@@ -13,6 +14,9 @@ export type UserHookType = {
   isSuccess: boolean;
   isLoggedIn: boolean;
   metadata?: Record<string, any> | null;
+  isAdmin: boolean;
+  isSeller: boolean;
+  isUser: boolean;
   logout: () => void;
 };
 
@@ -41,6 +45,7 @@ const useAuth = (): UserHookType => {
   const logout = async () => {
     await logoutFetcher.get();
     queryClient.resetQueries({ queryKey: ["user"] });
+    toast.success("Logged out successfully");
   };
 
   if (fetchStatus.isError) {
@@ -48,7 +53,7 @@ const useAuth = (): UserHookType => {
   }
 
   return {
-    user: { ...fetchStatus.data } as User,
+    user: { ...fetchStatus.data } as UserWithMetadata,
     isLoggedIn: !!fetchStatus.data,
     isLoading: fetchStatus.isLoading,
     isError: fetchStatus.isError,
@@ -56,6 +61,9 @@ const useAuth = (): UserHookType => {
     refetch: fetchStatus.refetch,
     isFetched: fetchStatus.isFetched,
     isSuccess: fetchStatus.isSuccess,
+    isAdmin: fetchStatus.data?.metadata?.role === "admin",
+    isSeller: fetchStatus.data?.metadata?.role === "seller",
+    isUser: fetchStatus.data?.metadata?.role === "user",
     logout,
   };
 };

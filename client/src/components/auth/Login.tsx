@@ -86,7 +86,7 @@ const Login = ({ open, setOpen }: LoginProps) => {
               Forgot Password?
             </Button>
           </div>
-          <SubmitButton text="Login" />
+          <SubmitButton>Login</SubmitButton>
         </form>
       </DialogContent>
     </Dialog>

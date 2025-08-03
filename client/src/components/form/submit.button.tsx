@@ -1,12 +1,13 @@
 import { Loader2Icon } from "lucide-react";
+import { ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 
 const SubmitButton = ({
-  text,
+  children,
   ...props
 }: {
-  text: string;
+  children: ReactNode;
   [key: string]: any;
 }) => {
   const form = useFormStatus();
@@ -15,7 +16,6 @@ const SubmitButton = ({
     <Button
       disabled={form.pending}
       type="submit"
-      className="s"
       {...props}
     >
       {form.pending ? (
@@ -23,7 +23,7 @@ const SubmitButton = ({
           <Loader2Icon />
         </span>
       ) : (
-        text
+        children
       )}
     </Button>
   );

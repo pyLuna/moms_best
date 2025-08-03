@@ -11,6 +11,17 @@ class Route {
     get: "/my",
     logout: "/logout",
   };
+  static category = {
+    get: {
+      all: "/all",
+      byId: "/:id",
+      from: "/from/:from",
+    },
+    restore: "/restore/:id",
+    create: "/create",
+    update: "/update/:id",
+    delete: "/delete/:id",
+  };
 }
 
 export default Route;

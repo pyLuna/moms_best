@@ -11,4 +11,15 @@ export const ApiUrl = {
   metadata: {
     get: "/metadata",
   },
+  category: {
+    get: {
+      all: "/category/all",
+      byId: (id: string) => `/category/${id}`,
+      from: (from: string) => `/category/from/${from}`,
+    },
+    create: "/category/create",
+    update: (id: string) => `/category/update/${id}`,
+    delete: (id: string) => `/category/delete/${id}`,
+    restore: (id: string) => `/category/restore/${id}`,
+  },
 };

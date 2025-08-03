@@ -10,11 +10,15 @@ const query = async <T>({
   collection_name,
   queryFn,
 }: QueryParams): Promise<T> => {
-  const col = client.db(COLLECTION).collection(collection_name);
+  try {
+    const col = client.db(COLLECTION).collection(collection_name);
 
-  const result = await queryFn(col);
+    const result = await queryFn(col);
 
-  return result as T;
+    return result as T;
+  } catch (error) {
+    throw error as string;
+  }
 };
 
 export default query;

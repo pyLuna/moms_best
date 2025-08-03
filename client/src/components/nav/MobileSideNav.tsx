@@ -4,7 +4,9 @@ import { Url } from "@/url/Url";
 import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
+import AppLink from "../ui/button.link";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
+import MobileLoggedIn from "./MobileLoggedIn";
 
 type MobileSideNavProps = {
   onSignIn?: () => void;
@@ -47,13 +49,14 @@ const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
         </SheetHeader>
         <div className="flex flex-col gap-2 text-center m-6 h-full">
           <nav className="flex flex-col gap-2 text-center grow">
-            <Button
+            <AppLink
+              href={Url.home}
               onClick={() => handleNavigate(Url.home)}
               variant="ghost"
             >
               Home
-            </Button>
-            {!isLoggedIn && (
+            </AppLink>
+            {!isLoggedIn ? (
               <>
                 <Button
                   onClick={handleSignIn}
@@ -68,6 +71,8 @@ const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
                   Create Account
                 </Button>
               </>
+            ) : (
+              <MobileLoggedIn handleNavigate={handleNavigate} />
             )}
           </nav>
           {isLoggedIn && (

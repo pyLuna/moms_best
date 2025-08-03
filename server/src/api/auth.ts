@@ -1,19 +1,15 @@
 import { Router } from "express";
-import { Roles } from "../../enums/roles";
+import { Roles } from "../enums/roles";
 import {
   createMetadata,
   getUserMetadata,
   updateField,
   updateOnlineStatus,
-} from "../../service/metadata";
-import {
-  addUser,
-  getUserByEmail,
-  getUserPrivateData,
-} from "../../service/user";
-import { compare, encrypt } from "../../utils/hashing";
-import Route from "../../utils/route";
-import { decodeToken, generateToken } from "../../utils/tokens";
+} from "../service/metadata";
+import { addUser, getUserByEmail, getUserPrivateData } from "../service/user";
+import { compare, encrypt } from "../utils/hashing";
+import Route from "../utils/route";
+import { decodeToken, generateToken } from "../utils/tokens";
 
 const router = Router();
 

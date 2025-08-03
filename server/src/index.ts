@@ -2,8 +2,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
 import express from "express";
-import auth from "./api/auth/auth";
-import user from "./api/user/user";
+import auth from "./api/auth";
+import category from "./api/category";
+import user from "./api/user";
 import { PORT } from "./constants";
 import { verifyApiKey } from "./middleware/verify/api.key";
 import { verifyAuthorization } from "./middleware/verify/auth";
@@ -38,6 +39,8 @@ app.use(verifyAuthorization, verifyApiKey);
 app.use("/user", user);
 
 app.use("/auth", auth);
+
+app.use("/category", category);
 
 // Only start the server if not in serverless environment bump
 if (require.main === module) {

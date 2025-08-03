@@ -32,6 +32,10 @@ export const roles: Record<string, Role> = {
       "write:products",
       "update:products",
       "delete:products",
+      "read:categories",
+      "write:categories",
+      "update:categories",
+      "delete:categories",
     ],
   },
   seller: {
@@ -58,6 +62,8 @@ export const roles: Record<string, Role> = {
       "write:products",
       "update:products",
       "delete:products",
+      "read:categories",
+      "update:categories",
     ],
   },
   user: {
@@ -82,6 +88,8 @@ export const roles: Record<string, Role> = {
       "delete:chats",
       "read:products",
       "update:products",
+      "read:categories",
+      "update:categories",
     ],
   },
   guest: {

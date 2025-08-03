@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDownIcon } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -53,13 +54,16 @@ export function ComboboxPopover({
           ) : (
             <Button
               variant="outline"
-              className="justify-start grow"
+              className="justify-between grow flex items-center"
             >
-              {selectedValue ? (
-                <>{selectedItem?.label}</>
-              ) : (
-                <>{placeholder ?? "Select Item"}</>
-              )}
+              <span>
+                {selectedValue ? (
+                  <>{selectedItem?.label}</>
+                ) : (
+                  <>{placeholder ?? "Select Item"}</>
+                )}
+              </span>
+              <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
             </Button>
           )}
         </PopoverTrigger>

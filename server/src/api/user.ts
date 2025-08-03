@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { authorize } from "../../middleware/verify/api.key";
-import { getUserMetadata } from "../../service/metadata";
-import { getUserByEmail } from "../../service/user";
-import Route from "../../utils/route";
-import { decodeToken } from "../../utils/tokens";
+import { authorize } from "../middleware/verify/api.key";
+import { getUserMetadata } from "../service/metadata";
+import { getUserByEmail } from "../service/user";
+import Route from "../utils/route";
+import { decodeToken } from "../utils/tokens";
 
 const router = Router();
 

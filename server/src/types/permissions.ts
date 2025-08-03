@@ -1,5 +1,10 @@
 type Users = "read:users" | "write:users" | "update:users";
 type Posts = "read:posts" | "write:posts" | "update:posts" | "delete:posts";
+type Categories =
+  | "read:categories"
+  | "write:categories"
+  | "update:categories"
+  | "delete:categories";
 type Comments =
   | "read:comments"
   | "write:comments"
@@ -19,13 +24,27 @@ type GuestPermissions =
   | "read:likes"
   | "read:products";
 
-type AdminPermissions = Users | Posts | Comments | Likes | Chats | Products;
-type SellerPermissions = Posts | Comments | Likes | Products | Chats;
+type AdminPermissions =
+  | Users
+  | Posts
+  | Comments
+  | Likes
+  | Chats
+  | Products
+  | Categories;
+type SellerPermissions =
+  | Posts
+  | Comments
+  | Likes
+  | Products
+  | Chats
+  | Omit<Categories, "delete:categories" | "write:categories">;
 type UserPermissions =
   | Posts
   | Comments
   | Likes
   | Chats
+  | Omit<Categories, "delete:categories" | "write:categories">
   | "read:products"
   | "update:products";
 

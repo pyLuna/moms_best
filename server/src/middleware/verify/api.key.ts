@@ -47,7 +47,6 @@ export const verifyApiKey = async (
 export const authorize = (permission: ServerPermissions) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const roleName = (req as any).role;
-
     if (!roleName) {
       res.status(403).json({ error: "Role not found in request" });
       return;

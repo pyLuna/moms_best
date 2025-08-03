@@ -19,7 +19,10 @@ export default function AppLink({
 
   return (
     <Link
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick?.();
+      }}
       to={href}
       className={className}
     >

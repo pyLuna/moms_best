@@ -119,7 +119,7 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
             name="rememberMe"
             label="Remember Me"
           />
-          <SubmitButton text="Register" />
+          <SubmitButton>Register</SubmitButton>
         </form>
       </DialogContent>
     </Dialog>
