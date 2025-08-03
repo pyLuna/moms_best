@@ -8,17 +8,17 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
-      position="top-center"
-      expand={true}
+      expand
       richColors
       closeButton
-      toastOptions={{
-        style: {
-          margin: "8px",
-          maxWidth: "calc(100vw - 16px)",
-        },
-        className: "toast",
-      }}
+      position="top-right"
+      style={
+        {
+          "--normal-bg": "var(--popover)",
+          "--normal-text": "var(--popover-foreground)",
+          "--normal-border": "var(--border)",
+        } as React.CSSProperties
+      }
       {...props}
     />
   );

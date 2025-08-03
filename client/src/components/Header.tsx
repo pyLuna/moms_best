@@ -23,9 +23,19 @@ const Header = () => {
       <div className="flex items-center justify-between mx-2 md:mx-6 ">
         <IconName
           initial={false}
-          className="text-primary-200 grow"
+          className="text-primary-200"
         />
-        <nav className="flex items-center justify-between gap-2 md:gap-4">
+        <nav className="gap-4 hidden md:flex items-center justify-center mx-8 grow ">
+          {isLoggedIn ? (
+            <LoggedInHeader />
+          ) : (
+            <DefaultHeader
+              setLoginOpen={setLoginOpen}
+              setSignUpOpen={setSignUpOpen}
+            />
+          )}
+        </nav>
+        <div className="flex flex-row items-center gap-2">
           <ModeToggle />
           <Button
             variant="ghost"
@@ -34,17 +44,7 @@ const Header = () => {
           >
             <MenuIcon />
           </Button>
-          <nav className="gap-4 hidden md:block items-center justify-end">
-            {isLoggedIn ? (
-              <LoggedInHeader />
-            ) : (
-              <DefaultHeader
-                setLoginOpen={setLoginOpen}
-                setSignUpOpen={setSignUpOpen}
-              />
-            )}
-          </nav>
-        </nav>
+        </div>
       </div>
       <Login
         open={loginOpen}
