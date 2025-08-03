@@ -8,7 +8,7 @@ const Home = () => {
     <div className="page">
       <h1>Home</h1>
       {isLoggedIn && user?.metadata?.role === "admin" && (
-        <AppLink href={Url.category}>Go to Category</AppLink>
+        <AppLink href={Url.category}>Category</AppLink>
       )}
     </div>
   );

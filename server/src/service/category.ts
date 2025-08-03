@@ -33,6 +33,7 @@ export default class CategoryService {
 
   async createCategory(data: Category) {
     try {
+      data.is_deleted = false; // Ensure new categories are not deleted
       const result = query({
         collection_name: CATEGORIES,
         queryFn: async (collection) => {
@@ -57,7 +58,9 @@ export default class CategoryService {
     const result = query({
       collection_name: CATEGORIES,
       queryFn: async (collection) => {
-        const categories = await collection.find({}).toArray();
+        const categories = await collection
+          .find({ is_deleted: false })
+          .toArray();
         return categories;
       },
     });
@@ -70,6 +73,7 @@ export default class CategoryService {
         collection_name: CATEGORIES,
         queryFn: async (collection) => {
           const category = await collection.findOne({
+            is_deleted: false,
             category_id: category_id,
           });
           if (!category) {
@@ -98,6 +102,7 @@ export default class CategoryService {
         collection_name: CATEGORIES,
         queryFn: async (collection) => {
           const category = await collection.findOne({
+            is_deleted: false,
             category_id: category_id,
           });
           if (!category) {
@@ -105,7 +110,7 @@ export default class CategoryService {
           }
           const updatedCategory = { ...category, ...data };
           await collection.updateOne(
-            { category_id: category_id },
+            { category_id: category_id, is_deleted: false },
             { $set: updatedCategory }
           );
           return updatedCategory;

@@ -1,18 +1,10 @@
+import { Category } from "@/types/category";
 import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
 import { useQuery } from "@tanstack/react-query";
 import { useImperativeHandle } from "react";
+import CategoryTile from "./CategoryTile";
 
-interface Category {
-  _id?: string;
-  category_id: string;
-  category_name: string;
-  from: "product" | "forum" | "report";
-  count: number;
-  is_deleted?: boolean;
-  created_at?: Date;
-  updated_at?: Date;
-}
 const CategoryLists = ({ ref }: { ref: React.Ref<any> }) => {
   const categoryFetcher = useFetcher(ApiUrl.category.get.all);
   const { data, isLoading, isError, refetch } = useQuery<Category[]>({
@@ -33,17 +25,13 @@ const CategoryLists = ({ ref }: { ref: React.Ref<any> }) => {
   if (isError) return <div>Error loading categories</div>;
   if (!data || data.length === 0) return <div>No categories found</div>;
   return (
-    <ul className="flex flex-col gap-4 mt-4">
+    <ul className="flex flex-col gap-2 mt-4 overflow-y-auto max-h-[400px]">
       {data.map((category) => (
-        <li
+        <CategoryTile
           key={category._id}
-          className="flex flex-col gap-2 p-4 border rounded"
-        >
-          <h1 className="text-lg font-semibold">{category.category_name}</h1>
-          <span className="text-sm text-gray-500">
-            {category.category_id} | {category.from}
-          </span>
-        </li>
+          category={category}
+          onDelete={() => refetch()}
+        />
       ))}
     </ul>
   );

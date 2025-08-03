@@ -54,7 +54,7 @@ export default function CategoryPage() {
     });
   };
   return (
-    <div className="page">
+    <div className="page w-full md:w-1/2 lg:w-1/3 mx-auto place-self-center">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4"

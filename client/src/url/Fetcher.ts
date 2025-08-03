@@ -51,8 +51,8 @@ class Fetcher {
     return fetch(this.getFullUrl(), this._getRequestInit("PUT", body));
   }
 
-  public patch(body: any): Promise<Response> {
-    return fetch(this.getFullUrl(), this._getRequestInit("PATCH", body));
+  public delete(body?: any): Promise<Response> {
+    return fetch(this.getFullUrl(), this._getRequestInit("DELETE", body));
   }
 }
 
