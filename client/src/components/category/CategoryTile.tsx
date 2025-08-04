@@ -3,7 +3,7 @@ import { ApiUrl } from "@/url/ApiUrl";
 import { useFetcher } from "@/url/Fetcher";
 import { Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 const CategoryTile = ({
   category,

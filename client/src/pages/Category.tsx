@@ -1,4 +1,4 @@
-import CategoryLists from "@/components/CategoryLists";
+import CategoryLists from "@/components/category/CategoryLists";
 import SubmitButton from "@/components/form/submit.button";
 import { ComboboxPopover } from "@/components/ui/combobox";
 import LabeledInput from "@/components/ui/labeled.input";

@@ -5,7 +5,7 @@ import { Url } from "@/url/Url";
 import { toast } from "sonner";
 
 const Home = () => {
-  const { user, isLoggedIn } = useUser();
+  const { user, isLoggedIn, logout } = useUser();
 
   const displayToast = () => {
     toast.success("Welcome to the Home Page!");
@@ -34,6 +34,12 @@ const Home = () => {
         <Button onClick={displayErrorToast}>Show Error Toast</Button>
         <Button onClick={displayInfoToast}>Show Info Toast</Button>
         <Button onClick={displayWarningToast}>Show Warning Toast</Button>
+        <Button
+          variant="secondary"
+          onClick={logout}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
