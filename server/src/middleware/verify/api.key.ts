@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { decodeToken } from "src/utils/tokens";
 import { roles } from "../../service/rbac";
 import { getUserMetadata } from "../../service/user/user.metadata";
 import { ServerPermissions } from "../../types/permissions";
 import { isSkip } from "../../utils/misc";
+import { decodeToken } from "../../utils/tokens";
 
 export const verifyApiKey = async (
   req: Request,
