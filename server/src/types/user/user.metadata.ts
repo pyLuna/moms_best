@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Roles } from "../enums/roles";
+import { Roles } from "../../enums/roles";
 
 export interface Metadata {
   _id: ObjectId;

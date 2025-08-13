@@ -22,6 +22,17 @@ class Route {
     update: "/update/:id",
     delete: "/delete/:id",
   };
+  static post = {
+    create: "/create",
+    get: {
+      byId: "/:id",
+      from: "/from/:from",
+      byCategory: "/by-category/:category_id",
+    },
+    restore: "/restore/:id",
+    update: "/update/:id",
+    delete: "/delete/:id",
+  };
 }
 
 export default Route;

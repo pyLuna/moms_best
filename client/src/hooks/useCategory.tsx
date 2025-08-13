@@ -16,11 +16,12 @@ export default function useCategory() {
   } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: async () => {
+      console.log("Getting categories");
       const response = await categoryFetcher.get();
       return await response.json();
     },
     refetchOnWindowFocus: false,
-    enabled: !!user, // Only fetch if user is available
+    enabled: !user.user, // Only fetch if user is available
     retry: 1, // Retry once on failure
     staleTime: 1000 * 60 * 60 * 24, // 1 day
   });

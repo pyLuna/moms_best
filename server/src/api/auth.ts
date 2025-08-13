@@ -1,12 +1,16 @@
 import { Router } from "express";
 import { Roles } from "../enums/roles";
 import {
+  addUser,
+  getUserByEmail,
+  getUserPrivateData,
+} from "../service/user/user";
+import {
   createMetadata,
   getUserMetadata,
   updateField,
   updateOnlineStatus,
-} from "../service/metadata";
-import { addUser, getUserByEmail, getUserPrivateData } from "../service/user";
+} from "../service/user/user.metadata";
 import { compare, encrypt } from "../utils/hashing";
 import Route from "../utils/route";
 import { decodeToken, generateToken } from "../utils/tokens";

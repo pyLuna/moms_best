@@ -34,12 +34,9 @@ const Home = () => {
         <Button onClick={displayErrorToast}>Show Error Toast</Button>
         <Button onClick={displayInfoToast}>Show Info Toast</Button>
         <Button onClick={displayWarningToast}>Show Warning Toast</Button>
-        <Button
-          variant="secondary"
-          onClick={logout}
-        >
-          Logout
-        </Button>
+        {isLoggedIn && (
+          <Button onClick={logout} variant="secondary">Logout</Button>
+        )}
       </div>
     </div>
   );

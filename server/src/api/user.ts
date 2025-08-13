@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authorize } from "../middleware/verify/api.key";
-import { getUserMetadata } from "../service/metadata";
-import { getUserByEmail } from "../service/user";
+import { getUserByEmail } from "../service/user/user";
+import { getUserMetadata } from "../service/user/user.metadata";
 import Route from "../utils/route";
 import { decodeToken } from "../utils/tokens";
 

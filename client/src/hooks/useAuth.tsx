@@ -28,6 +28,7 @@ const useAuth = (): UserHookType => {
   const fetchStatus = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
+      console.log("Fetching user data");
       const response = await myFetcher.get();
       const data = await response.json();
       if (!response.ok) {

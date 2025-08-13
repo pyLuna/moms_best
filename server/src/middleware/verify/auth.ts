@@ -5,14 +5,15 @@ const verifyAuthorization = (req: any, res: any, next: any) => {
   const isSkippable = isSkip(req.path);
   if (isSkippable) return next();
 
-  console.log("Authorization Middleware: Checking token...", req.cookies.token);
+  console.log("Authorization Middleware: Checking token...");
   const isVerified = verifyToken(req.cookies.token);
   if (!isVerified) {
     res.status(401).send({ error: "Please log in." });
     return;
   }
-
+console.log("Authorization Middleware: Token verified successfully.");
   next();
 };
 
 export { verifyAuthorization };
+

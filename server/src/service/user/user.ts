@@ -1,7 +1,7 @@
 import { Document, InsertOneResult } from "mongodb";
-import { USERS, USERS_PRIVATE } from "../mongo_db/collections";
-import query from "../mongo_db/query";
-import { User, UsersPrivate } from "../types/users";
+import { USERS, USERS_PRIVATE } from "../../mongo_db/collections";
+import query from "../../mongo_db/query";
+import { User, UsersPrivate } from "../../types/user/users";
 
 const getUserByEmail = async (email: string) => {
   const result = await query<User>({

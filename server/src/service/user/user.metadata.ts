@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
-import { Roles } from "../enums/roles";
-import { METADATA } from "../mongo_db/collections";
-import query from "../mongo_db/query";
-import { Metadata } from "../types/metadata";
-import { generateApiKey } from "../utils/hashing";
+import { Roles } from "../../enums/roles";
+import { METADATA } from "../../mongo_db/collections";
+import query from "../../mongo_db/query";
+import { Metadata } from "../../types/user/user.metadata";
+import { generateApiKey } from "../../utils/hashing";
 
 export const findMetadata = async (key?: string) => {
   if (!key) return null;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { decodeToken } from "src/utils/tokens";
-import { getUserMetadata } from "../../service/metadata";
 import { roles } from "../../service/rbac";
+import { getUserMetadata } from "../../service/user/user.metadata";
 import { ServerPermissions } from "../../types/permissions";
 import { isSkip } from "../../utils/misc";
 
