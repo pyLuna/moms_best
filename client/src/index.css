@@ -185,7 +185,7 @@ body {
 
 @layer {
   .page {
-    @apply px-4 h-full md:h-[81vh] lg:max-w-3/4 mx-auto overflow-y-auto;
+    @apply h-full md:h-[81vh] w-full overflow-y-auto;
   }
 
   .divider {

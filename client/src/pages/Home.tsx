@@ -5,7 +5,7 @@ import { Url } from "@/url/Url";
 import { toast } from "sonner";
 
 const Home = () => {
-  const { user, isLoggedIn, logout,isNotGuest } = useUser();
+  const { user, isLoggedIn, logout, isNotGuest } = useUser();
 
   const displayToast = () => {
     toast.success("Welcome to the Home Page!");
@@ -35,7 +35,12 @@ const Home = () => {
         <Button onClick={displayInfoToast}>Show Info Toast</Button>
         <Button onClick={displayWarningToast}>Show Warning Toast</Button>
         {isNotGuest && (
-          <Button onClick={logout} variant="secondary">Logout</Button>
+          <Button
+            onClick={logout}
+            variant="secondary"
+          >
+            Logout
+          </Button>
         )}
       </div>
     </div>

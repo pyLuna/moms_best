@@ -23,9 +23,17 @@ function App() {
             <CategoryProvider>
               <BrowserRouter>
                 <HeadLoader />
-                <main className="bg-background grid grid-rows-[120px_1fr] md:grid-rows-[70px_1fr] mx-auto h-screen">
+                <main className="bg-background grid grid-rows-[120px_1fr] md:grid-rows-[70px_1fr] gap-4 mx-auto max-w-full lg:max-w-[1300px] h-screen">
                   <Header />
-                  <PageRoutes />
+                  <div className="grid md:grid-cols-[200px_1fr_300px] gap-4">
+                    <aside className=" hidden md:block bg-accent">
+                      Left Sidebar Placeholder
+                    </aside>
+                    <PageRoutes />
+                    <aside className=" hidden md:block bg-accent">
+                      Right Sidebar Placeholder
+                    </aside>
+                  </div>
                 </main>
                 <Toaster />
               </BrowserRouter>
