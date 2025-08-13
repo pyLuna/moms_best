@@ -7,19 +7,24 @@ type UserContextType = UserHookType;
 const UserContext = createContext<UserContextType | undefined>(undefined);
 const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const authHook = useAuth();
-  const [displayLogin, setDisplayLogin] = useState(!authHook.isLoggedIn);
+  const [displayLogin, setDisplayLogin] = useState(authHook.isGuest);
   const [displaySignUp, setDisplaySignUp] = useState(false);
-
+  console.log("UserContextProvider rendered", authHook);
   return (
     <>
-    <UserContext.Provider
-      value={{
-        ...authHook,
-      }}
-    >
-      {children}
-    <Authenticate openLogin={displayLogin} openSignUp={displaySignUp} setOpenLogin={setDisplayLogin} setOpenSignUp={setDisplaySignUp} />
-    </UserContext.Provider>
+      <UserContext.Provider
+        value={{
+          ...authHook,
+        }}
+      >
+        {children}
+        <Authenticate
+          openLogin={displayLogin}
+          openSignUp={displaySignUp}
+          setOpenLogin={setDisplayLogin}
+          setOpenSignUp={setDisplaySignUp}
+        />
+      </UserContext.Provider>
     </>
   );
 };
@@ -34,4 +39,3 @@ const useUser = () => {
 
 export default UserContextProvider;
 export { UserContext, useUser };
-

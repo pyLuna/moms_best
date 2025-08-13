@@ -47,9 +47,7 @@ const useAuth = (): UserHookType => {
       const response = await myFetcher.get();
       data = await response.json();
       if (!response.ok) {
-        const userError = data.error;
         data = await guestLogin();
-        throw new Error(userError || "Failed to fetch user data");
       }
       console.log("User data fetched successfully:", data);
       return data as UserWithMetadata;
@@ -61,11 +59,11 @@ const useAuth = (): UserHookType => {
     refetchOnReconnect: true,
   });
 
-
   const logout = async () => {
     await logoutFetcher.get();
     queryClient.resetQueries({ queryKey: ["user"] });
     toast.success("Logged out successfully");
+    window.location.reload();
   };
 
   if (fetchStatus.isError) {

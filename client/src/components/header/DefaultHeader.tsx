@@ -42,7 +42,7 @@ export default function DefaultHeader({
       >
         Forum
       </AppLink>
-      {!user.isLoggedIn && (
+      {user.isGuest && (
         <>
           <Button
             className="block md:hidden"

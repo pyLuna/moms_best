@@ -14,7 +14,7 @@ type MobileSideNavProps = {
 
 const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
   const { isOpen, toggle, navigateRef } = useMobileNav();
-  const { isLoggedIn, logout } = useUser();
+  const { logout, isNotGuest } = useUser();
 
   const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ const MobileSideNav = ({ onSignIn, onSignUp }: MobileSideNavProps) => {
               onNavigate={() => toggle(false)}
             />
           </nav>
-          {isLoggedIn && (
+          {isNotGuest && (
             <Button
               onClick={() => {
                 logout();

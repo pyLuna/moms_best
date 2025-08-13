@@ -15,7 +15,7 @@ const IconName = ({
 
   return (
     <h1
-      className={`text-3xl md:text-4xl font-semibold mt-2 ${className}`}
+      className={`text-3xl font-semibold mt-2 ${className}`}
       style={{ fontFamily: "Tangerine" }}
     >
       {initial ? "MB" : "Mom's Best"}
