@@ -43,7 +43,7 @@ class Fetcher {
     return fetch(this.getFullUrl(), this._getRequestInit("GET"));
   }
 
-  public post(body: any): Promise<Response> {
+  public post(body?: any): Promise<Response> {
     return fetch(this.getFullUrl(), this._getRequestInit("POST", body));
   }
 

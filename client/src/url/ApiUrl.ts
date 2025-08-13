@@ -2,6 +2,7 @@ export const ApiUrl = {
   email: "/auth/email",
   signup: {
     email: "/auth/signup/email",
+    guest: "/auth/signup/guest",
   },
   user: {
     my: "/user/my",

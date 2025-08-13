@@ -94,6 +94,6 @@ export const roles: Record<string, Role> = {
   },
   guest: {
     name: "guest",
-    permissions: ["read:posts", "read:comments", "read:likes", "read:products"],
+    permissions: ["read:posts", "read:comments", "read:likes", "read:products", "read:users", "read:categories"],
   },
 } as const;

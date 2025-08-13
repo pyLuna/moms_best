@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Roles } from "../enums/roles";
 import {
+  addGuest,
   addUser,
   getUserByEmail,
   getUserPrivateData,
@@ -19,6 +20,33 @@ const router = Router();
 
 const day = 24 * 60 * 60 * 1000; // 1 day in milliseconds
 const month = 30 * day; // 30 days in milliseconds
+
+
+router.post(Route.auth.signup.guest, async (req, res) => {
+
+  const guestData = await addGuest();
+
+  const metadata = await createMetadata(guestData.user_id.toString(), Roles.GUEST);
+
+  const token = generateToken({
+    user_id: guestData.user_id,
+    email: guestData.email,
+    role: metadata.role,
+  });
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: day, // 1 day
+  });
+
+  res.send({
+    success: true,
+    metadata: {
+      role: metadata.role,
+    },
+  });
+});
 
 router.post(Route.auth.login.email, async (req, res) => {
   const { email, password, rememberMe } = req.body;

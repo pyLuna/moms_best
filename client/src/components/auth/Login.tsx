@@ -18,9 +18,10 @@ import LabeledInput from "../ui/labeled.input";
 type LoginProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  onSignUp?: Dispatch<SetStateAction<boolean>>;
 };
 
-const Login = ({ open, setOpen }: LoginProps) => {
+const Login = ({ open, setOpen, onSignUp }: LoginProps) => {
   const user = useUser();
   const loginFetcher = useFetcher(ApiUrl.email);
 
@@ -87,6 +88,14 @@ const Login = ({ open, setOpen }: LoginProps) => {
             </Button>
           </div>
           <SubmitButton>Login</SubmitButton>
+          {onSignUp && (
+            <Button type="button" variant="link" onClick={() => {
+              onSignUp(true);
+              setOpen(false);
+            }}>
+              Create Account
+            </Button>
+          )}
         </form>
       </DialogContent>
     </Dialog>

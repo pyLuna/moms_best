@@ -4,6 +4,7 @@ import { useFetcher } from "@/url/Fetcher";
 import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import SubmitButton from "../form/submit.button";
+import { Button } from "../ui/button";
 import { LabelCheckbox } from "../ui/checkbox";
 import { ComboboxPopover } from "../ui/combobox";
 import {
@@ -18,6 +19,7 @@ import LabeledInput from "../ui/labeled.input";
 type LoginProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  onLogin?: Dispatch<SetStateAction<boolean>>;
 };
 
 const roles = [
@@ -29,7 +31,7 @@ if (import.meta.env.MODE === "development") {
   roles.push({ value: "admin", label: "Admin" });
 }
 
-const SignUp = ({ open, setOpen }: LoginProps) => {
+const SignUp = ({ open, setOpen, onLogin }: LoginProps) => {
   const [selectedRole, setSelectedRole] = useState<string>("user");
   const user = useUser();
   const fetcher = useFetcher(ApiUrl.signup.email);
@@ -120,6 +122,15 @@ const SignUp = ({ open, setOpen }: LoginProps) => {
             label="Remember Me"
           />
           <SubmitButton>Register</SubmitButton>
+          
+          {onLogin && (
+            <Button type="button" variant="link" onClick={() => {
+              onLogin(true);
+              setOpen(false);
+            }}>
+              Sign Up instead
+            </Button>
+          )}
         </form>
       </DialogContent>
     </Dialog>

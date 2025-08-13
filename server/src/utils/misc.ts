@@ -5,6 +5,7 @@ const skippablePaths = [
   Route.auth.login.email,
   Route.auth.signup.email,
   Route.user.logout,
+  Route.auth.signup.guest,
 ];
 
 // Helper to wrap async middleware

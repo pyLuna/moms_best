@@ -13,6 +13,16 @@ const getUserByEmail = async (email: string) => {
   return result;
 };
 
+const addGuest = async () => {
+  const guestEmail = `guest_${Date.now()}@example.com`;
+  const guestPassword = "guest_password";
+  const guestData = {
+    name: "Guest User",
+  };
+  const userId = await addUser(guestEmail, guestPassword, guestData);
+  return { user_id: userId, email: guestEmail };
+};
+
 const addUser = async (
   email: string,
   password: string,
@@ -57,4 +67,5 @@ const getUserPrivateData = async (email: string) => {
   return result;
 };
 
-export { addUser, getUserByEmail, getUserPrivateData };
+export { addGuest, addUser, getUserByEmail, getUserPrivateData };
+

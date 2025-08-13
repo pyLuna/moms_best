@@ -5,6 +5,7 @@ class Route {
     },
     signup: {
       email: "/signup/email",
+      guest: "/signup/guest",
     },
   };
   static user = {
