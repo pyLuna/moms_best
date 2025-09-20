@@ -39,7 +39,7 @@ Roles must be provided with an API Key, without it the user does not have a perm
 
 ## Implementation
 
-Api key must be sent in headers as `x-api-key`. Middleware will automatically extract this and validated by the `validateApiKey` function.
+Api key must be sent in headers as `x-api-key`. Middleware will automatically extract this and validated by the server.
 
 To add a role-based API use the `authorize(role)` to add as a middleware for that API Route
 
